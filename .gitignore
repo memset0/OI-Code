@@ -1,0 +1,8 @@
+*.exe
+*.in
+*.out
+*.txt
+*.bat
+INPUT
+OUTPUT
+private/*

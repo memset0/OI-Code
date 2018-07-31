@@ -1,0 +1,85 @@
+#include <bits/stdc++.h>
+using namespace std;
+int n;
+string s;
+map < string, bool > f;
+void init(void);
+int main() {
+//	freopen("nim.in", "r", stdin);
+//	freopen("nim.out", "w", stdout);
+	ios::sync_with_stdio(0);
+	init();
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		cin >> s;
+		if (f[s]) printf("Josh Got Gold Medal!\n");
+		else printf("Josh was exploded!\n");
+	}
+	return 0;
+}
+void init(void) {
+	f["NNN"] = 1;
+	f["NNO"] = 1;
+	f["NNP"] = 0;
+	f["NNQ"] = 1;
+	f["NON"] = 1;
+	f["NOO"] = 0;
+	f["NOP"] = 1;
+	f["NOQ"] = 1;
+	f["NPN"] = 1;
+	f["NPO"] = 0;
+	f["NPP"] = 0;
+	f["NPQ"] = 0;
+	f["NQN"] = 1;
+	f["NQO"] = 0;
+	f["NQP"] = 0;
+	f["NQQ"] = 1;
+	f["ONN"] = 1;
+	f["ONO"] = 0;
+	f["ONP"] = 1;
+	f["ONQ"] = 1;
+	f["OON"] = 1;
+	f["OOO"] = 0;
+	f["OOP"] = 0;
+	f["OOQ"] = 0;
+	f["OPN"] = 0;
+	f["OPO"] = 1;
+	f["OPP"] = 0;
+	f["OPQ"] = 0;
+	f["OQN"] = 1;
+	f["OQO"] = 0;
+	f["OQP"] = 0;
+	f["OQQ"] = 1;
+	f["PNN"] = 1;
+	f["PNO"] = 0;
+	f["PNP"] = 0;
+	f["PNQ"] = 0;
+	f["PON"] = 0;
+	f["POO"] = 1;
+	f["POP"] = 0;
+	f["POQ"] = 0;
+	f["PPN"] = 0;
+	f["PPO"] = 0;
+	f["PPP"] = 1;
+	f["PPQ"] = 0;
+	f["PQN"] = 0;
+	f["PQO"] = 0;
+	f["PQP"] = 0;
+	f["PQQ"] = 1;
+	f["QNN"] = 1;
+	f["QNO"] = 0;
+	f["QNP"] = 0;
+	f["QNQ"] = 1;
+	f["QON"] = 1;
+	f["QOO"] = 0;
+	f["QOP"] = 0;
+	f["QOQ"] = 1;
+	f["QPN"] = 0;
+	f["QPO"] = 0;
+	f["QPP"] = 0;
+	f["QPQ"] = 1;
+	f["QQN"] = 0;
+	f["QQO"] = 0;
+	f["QQP"] = 0;
+	f["QQQ"] = 1;
+}
