@@ -17,7 +17,7 @@ int read() {
 
 int main() {
 	int n, k;
-	n = read(), k = read()
-	printf("%d\n", (n - 1) / (k - 1));
+	n = read(), k = read();
+	printf("%d\n", n + (n - 1) / (k - 1));
 	return 0;
 }

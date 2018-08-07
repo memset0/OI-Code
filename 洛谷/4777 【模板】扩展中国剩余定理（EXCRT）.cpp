@@ -44,6 +44,17 @@ keys exgcd(ll a, ll b) {
 
 ll inv(ll a, ll b) {
 	return a > b ? exgcd(a, b).x % b: exgcd(b, a).y % b;
+} 
+
+ll mul(ll a, ll b, ll p) { 
+	a = (a + p) % p, b = (b + p) % p;
+	ll sum = 0, u = 1, t = a;
+    while (u <= b) {
+		if (b & u) sum = (sum + t) % p;
+		u <<= 1;
+		t = (t << 1) % p;
+	}
+	return sum;
 }
 
 int main() {
@@ -56,8 +67,8 @@ int main() {
 		// printf("%lld %lld %lld %lld\n", a1, b1, a2, b2);
 		gd = gcd(a1, a2);
 		a0 = a1 / gd * a2;
-		b0 = ((b2 - b1) / gd * inv(a1 / gd, a2 / gd) % (a2 / gd) * a1 % a0 + b1 + a0) % a0;
-		printf("%lld %lld\n", a0, b0);
+		b0 = (mul((b2 - b1) / gd, inv(a1 / gd, a2 / gd), (a2 / gd)) * a1 % a0 + b1 + a0) % a0;
+		// printf("%lld %lld\n", a0, b0);
 	}
 	printf("%lld\n", b0);
 	return 0;

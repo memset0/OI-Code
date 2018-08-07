@@ -1,7 +1,7 @@
 // ==============================
 //  author: memset0
 //  website: https://memset0.cn
-//  date: 2018.08.07 16:29:56
+//  date: 2018.08.06 16:50:46
 // ==============================
 #include <bits/stdc++.h>
 #define ll long long
@@ -16,8 +16,7 @@ int read() {
 }
 
 int main() {
-	int n, k;
-	n = read(), k = read()
-	printf("%d\n", (n - 1) / (k - 1));
+	int n = read();
+	printf("%.2f",(pow(((1 + sqrt(5)) / 2), n) - pow(((1 - sqrt(5)) / 2), n)) / sqrt(5)); 
 	return 0;
 }
