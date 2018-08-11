@@ -1,41 +1,75 @@
+// ==============================
+//  author: memset0
+//  website: https://memset0.cn
+// ==============================
 #include <bits/stdc++.h>
+#define ll long long
 using namespace std;
-const int maxn = 80010;
-set < int > a;
-set < int > ::iterator it, l, r;
-int n, x, y, mark;
+
+int read() {
+    int x = 0; bool m = 0; char c = getchar();
+    while (!isdigit(c) && c != '-') c = getchar();
+    if (c == '-') m = 1, c = getchar();
+    while (isdigit(c)) x = x * 10 + c - '0', c = getchar();
+    if (m) return -x; else return x;
+}
+
+const int inf = 2e9 + 10;
+int n, x, opt, ans;
+set < int > pet, pep;
+set < int > ::iterator it, bfr, aft;
+
 int main() {
-	scanf("%d", &n);
-	int ans = 0;
+	freopen("INPUT", "r", stdin);
+	
+	n = read();
+	pet.insert(inf), pet.insert(-inf);
+	pep.insert(inf), pep.insert(-inf);
 	for (int i = 1; i <= n; i++) {
-		scanf("%d%d", &x, &y);
-		if (mark == x) a.insert(y);
-		else if (a.size() == 0) {
-			mark = x;
-			a.insert(y);
-		} else {
-			it = a.lower_bound(y);
-			if (it == a.end()) it--;
-			if (it != a.begin()) {
-				r = it;
-				l = --it;
-				printf("!%d %d!\n", *l, *r);
-				if ((y - *l) <= (*r - y)) {
-					a.erase(l);
-					printf("  !%d!\n", *l);
-					ans = (ans + y - *l) % 1000000;
-				}
-				else {
-					a.erase(r);
-					printf("  !%d!\n", *r);
-					ans = (ans + *r - y) % 1000000;
-				}
+		opt = read();
+		if (opt) {
+			// ÈË
+			x = read();
+			if (pet.size() == 2) pep.insert(x);
+			else if (pet.size() == 3) {
+				it = ++pet.begin();
+				ans += abs(x - (*it));
+				pet.erase(it);
 			} else {
-				a.erase(it);
-				ans = (ans + *it - y) % 1000000;
+				aft = pet.upper_bound(x);
+				bfr = --aft;
+				if ((x - *aft) <= (*bfr - x)) {
+					ans += x - *aft;
+					pet.erase(aft);
+				} else {
+					ans += *bfr - x;
+					pet.erase(bfr);
+				}
+			}
+		} else {
+			// ¹· 
+			x = read();
+			if (pep.size() == 2) pet.insert(x);
+			else if (pep.size() == 3) {
+				it = ++pep.begin();
+				ans += abs(x - (*it));
+				pep.erase(it);
+			} else {
+				aft = pep.upper_bound(x);
+				bfr = --aft;
+				if ((x - *aft) <= (*bfr - x)) {
+					ans += x - *aft;
+					pep.erase(aft);
+				} else {
+					ans += *bfr - x;
+					pep.erase(bfr);
+				}
 			}
 		}
+		if (ans > 1000000)
+			ans %= 1000000;
 	}
 	printf("%d\n", ans);
+	
 	return 0;
 }
