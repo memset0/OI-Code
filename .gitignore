@@ -7,5 +7,3 @@ INPUT
 OUTPUT
 private/*
 *.sublime-workspace
-.vscode
-.vscode/*
