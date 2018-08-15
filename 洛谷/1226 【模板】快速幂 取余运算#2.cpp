@@ -15,6 +15,17 @@ int read() {
 }
 
 int main() {
+	
+	int b, p, k, mul, ans;
+	b = read(), p = read(), k = read();
+	mul = b % k, ans = 1 % k;
+	printf("%d^%d mod %d=", b, p, k);
+	while (p) {
+		if (p & 1) ans = ans * mul % k;
+		mul = mul * mul % k;
+		p >>= 1;
+	}
+	printf("%d\n", ans);
 
 	return 0;
 }
