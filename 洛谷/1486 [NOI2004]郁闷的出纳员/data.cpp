@@ -3,6 +3,7 @@
 //  website: https://memset0.cn
 // ==============================
 #include <bits/stdc++.h>
+#include <windows.h>
 #define ll long long
 using namespace std;
 
@@ -14,44 +15,28 @@ int read() {
     if (m) return -x; else return x;
 }
 
-int opt, w, c, sw, sc;
-set < int > Set;
-map < int, int > Map;
-set < int > ::iterator it;
+int n, m, opt;
 
 int main() {
-//	freopen("INPUT", "r", stdin);
-	
-	while (scanf("%d", &opt) != EOF) {
+	srand(GetTickCount());
+	n = 10, m = 0;
+	printf("%d %d\n", n, m);
+	while (n--) {
+		opt = rand() % 4;
 		switch (opt) {
+			case 0:
+				printf("F %d\n", rand() % 10 + 1);
+				break;
 			case 1:
-				w = read(), c = read();
-				if (!Set.count(c)) {
-					Set.insert(c);
-					Map[c] = w;
-					sw += w, sc += c;
-				}
+				printf("I %d\n", rand() % 10);
 				break;
 			case 2:
-				if (Set.size()) {
-					it = --Set.end();
-					sw -= Map[*it], sc -= *it;
-					Set.erase(it);
-				}
+				printf("A %d\n", rand() % 10);
 				break;
 			case 3:
-				if (Set.size()) {
-					it = Set.begin();
-					sw -= Map[*it], sc -= *it;
-					Set.erase(it);
-				}
-				break;
-			case -1:
-				printf("%d %d\n", sw, sc);
+				printf("S %d\n", rand() % 10);
 				break;
 		}
 	}
-	
 	return 0;
 }
-

@@ -14,62 +14,55 @@ int read() {
     if (m) return -x; else return x;
 }
 
-const int inf = 2e9 + 10;
-int n, x, opt, ans;
-set < int > pet, pep;
-set < int > ::iterator it, bfr, aft;
+int n, x, opt, tag, ans;
+set < int > s;
+set < int > ::iterator l, r, it;
+
+void get(int x, set < int > ::iterator it) {
+//	printf("%d(%d) => %d(%d)\n", x, tag ^ 1, *it, tag);
+	ans = (ans + abs(*it - x)) % 1000000;
+	s.erase(it);
+}
 
 int main() {
-	freopen("INPUT", "r", stdin);
+//	freopen("INPUT", "r", stdin);
 	
 	n = read();
-	pet.insert(inf), pet.insert(-inf);
-	pep.insert(inf), pep.insert(-inf);
-	for (int i = 1; i <= n; i++) {
-		opt = read();
-		if (opt) {
-			// ÈË
-			x = read();
-			if (pet.size() == 2) pep.insert(x);
-			else if (pet.size() == 3) {
-				it = ++pet.begin();
-				ans += abs(x - (*it));
-				pet.erase(it);
-			} else {
-				aft = pet.upper_bound(x);
-				bfr = --aft;
-				if ((x - *aft) <= (*bfr - x)) {
-					ans += x - *aft;
-					pet.erase(aft);
-				} else {
-					ans += *bfr - x;
-					pet.erase(bfr);
-				}
-			}
+	opt = read(), x = read();
+	tag = opt, s.insert(x);
+	for (int i = 2; i <= n; i++) {
+		opt = read(), x = read();
+//		printf(">>> %d %d : %d : ", opt, x, tag);
+//		for (auto it = s.begin(); it != s.end(); it++)
+//			printf("%d ", *it);
+//		puts("");
+		if (opt == tag) {
+			s.insert(x);
 		} else {
-			// ¹· 
-			x = read();
-			if (pep.size() == 2) pet.insert(x);
-			else if (pep.size() == 3) {
-				it = ++pep.begin();
-				ans += abs(x - (*it));
-				pep.erase(it);
+			if (!s.size()) {
+				tag = opt;
+				s.insert(x);
 			} else {
-				aft = pep.upper_bound(x);
-				bfr = --aft;
-				if ((x - *aft) <= (*bfr - x)) {
-					ans += x - *aft;
-					pep.erase(aft);
+				it = s.lower_bound(x);
+				if (it == s.end()) {
+					get(x, --it);
+				} else if (*it == x) {
+					get(x, it);
 				} else {
-					ans += *bfr - x;
-					pep.erase(bfr);
+					if (it == s.begin()) {
+						get(x, it);
+					} else {
+						r = it, l = --it;
+						if (x - *l <= *r - x) get(x, l);
+						else get(x, r);
+					}
 				}
 			}
 		}
-		if (ans > 1000000)
-			ans %= 1000000;
 	}
+	
 	printf("%d\n", ans);
 	
 	return 0;
 }
+
