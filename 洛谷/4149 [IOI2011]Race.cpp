@@ -24,9 +24,11 @@ void add_edge(int u, int v, int w) {
 	nxt[tot] = hed[u], to[tot] = v, val[tot] = w, hed[u] = tot++;
 }
 
+#define v to[i]
+
 void getroot(int u, int father = 0) {
 	siz[u] = 1, maxp[u] = 0;
-	for (int i = hed[u], v = to[i]; i; i = nxt[i], v = to[i])
+	for (int i = hed[u]; i; i = nxt[i])
 		if (!vis[v] && v != father) {
 			getroot(v, u);
 			siz[u] += siz[v];
@@ -40,7 +42,7 @@ void getdis(int u, int father = 0) {
 //	printf("getdis %d\n", u);
 	if (dis[u] > k || stp[u] > ans) return;
 	len++, rem[len] = dis[u], cst[len] = stp[u];
-	for (int i = hed[u], v = to[i]; i; i = nxt[i], v = to[i])
+	for (int i = hed[u]; i; i = nxt[i])
 		if (!vis[v] && v != father) {
 			dis[v] = dis[u] + val[i], stp[v] = stp[u] + 1;
 			getdis(v, u);
@@ -50,7 +52,7 @@ void getdis(int u, int father = 0) {
 void solve(int u) {
 //	printf("=== solve %d ===\n", u);
 	vis[u] = 1, mrk[0] = 0, toc[0] = 1, toc[1] = 0;
-	for (int i = hed[u], v = to[i]; i; i = nxt[i], v = to[i])
+	for (int i = hed[u]; i; i = nxt[i])
 		if (!vis[v]) {
 			len = 0, stp[v] = 1, dis[v] = val[i], getdis(v);
 			for (int i = 1; i <= len; i++)
@@ -64,16 +66,17 @@ void solve(int u) {
 		}
 	for (int i = 1; i <= toc[0]; i++)
 		mrk[toc[i]] = inf;
-	for (int i = hed[u], v = to[i]; i; i = nxt[i], v = to[i])
+	for (int i = hed[u]; i; i = nxt[i])
 		if (!vis[v]) {
 			root = 0, full_size = maxp[root] = siz[v];
 			getroot(v), solve(root);
 		}
 }
 
+#undef v
 
 int main() {
-//	freopen("INPUT", "r", stdin);
+	// freopen("INPUT", "r", stdin);
 	memset(mrk, 63, sizeof(mrk));
 
 	n = read(), k = read();
