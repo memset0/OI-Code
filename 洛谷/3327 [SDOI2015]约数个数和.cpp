@@ -14,51 +14,41 @@ int read() {
     if (m) return -x; else return x;
 }
 
-const int maxn = 50000;
+const int maxn = 50010;
 
-int t, a, b, c, d, k;
+int t, n, m;
 
-int vis[50000], pri[50000], sum[50000], miu[50000];
+ll ans;
+
+int miu[maxn], vis[maxn], pri[maxn], sum[maxn], g[maxn];
 
 void init() {
 
+	int N = 50000;
 	miu[1] = 1;
-
-	for (int i = 2; i <= 50000; i++) {
+	for (int i = 2; i <= N; i++) {
 		if (!vis[i]) {
 			miu[i] = -1;
 			pri[++pri[0]] = i;
 		}
-		for (int j = 1; j <= pri[0] && i * pri[j] <= 50000; j++) {
+		for (int j = 1; j <= pri[0] && i * pri[j] <= N; j++) {
 			vis[i * pri[j]] = 1;
 			if (i % pri[j] == 0) break;
-		 	miu[i * pri[j]] = -miu[i];
+			miu[i * pri[j]] = -miu[i];
 		}
 	}
 
-	for (int i = 1; i <= 1000; i++)
-		printf("%4d", miu[i]);
-
-	for (int i = 1; i <= 50000; i++)
+	for (int i = 1; i <= N; i++)
 		sum[i] = sum[i - 1] + miu[i];
 
-}
+	for (int n = 1; n <= N; n++) {
 
-ll calc(int n, int m) {
+		for (int l = 1, r; l <= n; l = r + 1) {
+			r = n / (n / l);
+			g[n] += (n / l) * (r - l + 1);
+		}
 
-	ll ans = 0;
-
-	if (n > m) swap(n, m);
-	n /= k, m /= k;
-
-	for (int l = 1, r; l <= n; l = r + 1) {
-		r = min(n / (n / l), m / (m / l));
-		ans = ans + 1LL * (n / l) * (m / l) * (sum[r] - sum[l - 1]);
 	}
-
-	// printf("%d %d %lld\n", n, m, ans);
-
-	return ans;
 
 }
 
@@ -71,14 +61,17 @@ int main() {
 	t = read();
 	while (t--) {
 
-		a = read(), b = read();
-		c = read(), d = read();
-		k = read();
+		ans = 0;
 
-		printf("%lld\n", calc(b, d)
-				- calc(a - 1, d)
-				- calc(b, c - 1)
-				+ calc(a - 1, c - 1));
+		n = read(), m = read();
+		if (n > m) swap(n, m);
+
+		for (int l = 1, r; l <= n; l = r + 1) {
+			r = min(n / (n / l), m / (m / l));
+			ans += 1LL * (sum[r] - sum[l - 1]) * g[n / l] * g[m / l];
+		}
+
+		printf("%lld\n", ans);
 
 	}
 
