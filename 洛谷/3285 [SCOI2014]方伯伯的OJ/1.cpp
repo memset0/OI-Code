@@ -36,10 +36,8 @@ int get_size(int l, int r) {
 }
 
 node *newnode(int l, int r) {
-	cnt++;
-	if (l == r) t[cnt] = node(l, (1 <= l && l <= n ? 1 : 0), null, null);
-	else t[cnt] = node(0, get_size(l, r), null, null);
-	return st[cnt] = &t[cnt];
+	if (l == r) return &(*st[cnt++] = node(l, (1 <= l && l <= n ? 1 : 0), null, null));
+	return &(*st[cnt++] = node(0, get_size(l, r), null, null));
 }
 
 int query(int k, int l, int r, node *&u) {
@@ -82,6 +80,7 @@ void update(int x, int y, int z, int l, int r, node *&u) {
 int main() {
 //	freopen("INPUT", "r", stdin);
 //	freopen("OUTPUT", "w", stdout);
+	freopen("3.txt", "r", stdin);
 
 	n = read(), m = read();
 	for (int i = 0; i < (maxn << 6); i++)
@@ -93,23 +92,23 @@ int main() {
 	for (int i = 1; i <= m; i++) {
 		opt = read();
 		if (opt == 1) {
-			x = read() - last, y = read() - last;
+			x = read(), y = read();
 			k = mp.find(x) != mp.end() ? mp[x] : x;
 			printf("%d\n", last = rank(k, -m, n + m, root));
 			modify(k, y, -m, n + m, root);
 			mp.erase(x), mp[y] = k;
 		} else if (opt == 2) {
-			x = read() - last, k = mp.find(x) != mp.end() ? mp[x] : x;
+			x = read(), k = mp.find(x) != mp.end() ? mp[x] : x;
 			printf("%d\n", last = rank(k, -m, n + m, root));
 			update(k, -1, -1, -m, n + m, root);
 			update(mp[x] = --left_side, 1, x, -m, n + m, root);
 		} else if (opt == 3) {
-			x = read() - last, k = mp.find(x) != mp.end() ? mp[x] : x;
+			x = read(), k = mp.find(x) != mp.end() ? mp[x] : x;
 			printf("%d\n", last = rank(k, -m, n + m, root));
 			update(k, -1, -1, -m, n + m, root);
 			update(mp[x] = ++right_side, 1, x, -m, n + m, root);
 		} else if (opt == 4) {
-			k = read() - last;
+			k = read();
 			printf("%d\n", last = query(k, -m, n + m, root));
 		}
 //		for (int i = 1; i <= n; i++) {
