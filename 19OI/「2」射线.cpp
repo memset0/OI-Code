@@ -14,7 +14,7 @@ int read() {
     if (m) return -x; else return x;
 }
 
-const int maxn = 100010 * 20;
+const int maxn = 100010 * 100;
 
 int n, m, x;
 int cnt, root;
@@ -113,7 +113,8 @@ int main() {
 	for (int i = 1; i <= m; i++) {
 		if (read() == 1) {
 			x = read();
-			modify(x + 1, n);
+			if (x + 1 <= n)
+				modify(x + 1, n);
 		} else {
 			x = read();
 			ret = query(1, x);
