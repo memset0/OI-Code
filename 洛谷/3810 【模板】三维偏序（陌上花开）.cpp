@@ -14,11 +14,36 @@ int read() {
     if (m) return -x; else return x;
 }
 
-int main() {
-	n = read(), m = read();
-	for (int i = 1; i <= n; i++) {
-		
-	}
-	return 0;
+const int maxn = 100010;
+
+int n, m;
+struct node {
+	int a, b, c;
+} e[maxn];
+
+bool cmp1(node a, node b) {
+	return a.a < b.a;
 }
 
+void solve(int l, int r) {
+	int mid = (l + r) >> 1;
+	if (l == r) return;
+	solve(l, mid);
+	solve(mid + 1, r);
+	int L = l, R = mid + 1, T = 0;
+	while (L <= mid && R <= r) {
+		if (e[L].b < e[R].b || (e[L].b == e[R].b && e[L].c < e[R].c)) {
+			t[++T] = e[L];
+			modify(1)
+		}
+	}
+}
+
+int main() {
+	n = read(), m = read();
+	for (int i = 1; i <= n; i++)
+		e[i].a = read(), e[i].b = read(), e[i].c = read();
+	sort(e + 1, e + n + 1, cmp1);
+	solve(1, n);
+	return 0;
+}
