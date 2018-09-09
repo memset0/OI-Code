@@ -14,29 +14,43 @@ int read() {
     if (m) return -x; else return x;
 }
 
-const int maxn = 52;
-int n, m, a[maxn][maxn], f[maxn][maxn][maxn][maxn];
+char readc() {
+	char c = getchar();
+	while (c != '.' && c != '*') c = getchar();
+	return c;
+}
+
+const int maxn = 60;
+int n, m;
+char a[maxn][maxn];
+int lx, ly, rx, ry;
 
 int main() {
-	memset(f, 63, sizeof(f));
+	
 	n = read(), m = read();
 	for (int i = 1; i <= n; i++)
 		for (int j = 1; j <= m; j++)
-			a[i][j] = read();
-	f[1][1][1][1] = 0;
+			a[i][j] = readc();
+	
 	for (int i = 1; i <= n; i++)
 		for (int j = 1; j <= m; j++)
-			for (int p = 1; p <= n; p++)
-				for (int q = 1; q <= m; q++)
-					if ((!(i == p && j == q)) || (i == n && j == m))
-						f[i][j][p][q] = min(min(
-							f[i - 1][j][p - 1][q],
-							f[i][j - 1][p][q - 1]
-						), min(
-							f[i][j - 1][p - 1][q],
-							f[i - 1][j][p][q - 1]
-						)) + a[i][j] + a[p][q];
-	printf("%d\n", f[n][m][n][m]);
+			if (a[i][j] == '*') {
+				if (!lx) {
+					lx = rx = i;
+					ly = ry = j;
+				} else {
+					lx = min(lx, i);
+					rx = max(rx, i);
+					ly = min(ly, j);
+					ry = max(ry, j);
+				}
+			}
+	for (int i = lx; i <= rx; i++) {
+		for (int j = ly; j <= ry; j++)
+			putchar(a[i][j]);
+		putchar('\n');
+	}
+		
 	return 0;
 }
 
