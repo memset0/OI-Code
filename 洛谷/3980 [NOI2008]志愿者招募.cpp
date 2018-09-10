@@ -18,7 +18,7 @@ const int maxn = 11010, maxm = 45010, inf = 1e9;
 
 int n, m, u, v, l, r, x, e, s;
 int flow, cost, max_flow, min_cost;
-int pre[maxn], dis[maxn], q[maxn * maxn], inq[maxn];
+int pre[maxn], dis[maxn], q[maxn * 1000], inq[maxn];
 int tot = 2, hed[maxn], nxt[maxm], to[maxm], val[maxm], cst[maxm];
 
 void add_simple_edge(int u, int v, int w, int c) {
@@ -55,6 +55,7 @@ bool spfa() {
 }
 
 int main() {
+//	freopen("INPUT", "r", stdin);
 	
 	n = read(), m = read();
 	for (int i = 1; i <= n; i++) {

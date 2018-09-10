@@ -91,7 +91,7 @@ int main() {
 		if (readc() == 'M') {
 			k = read(), x = read();
 			modify(k, n, x - a[k], x - a[k]);
-			a[i] = x;
+			a[k] = x;
 		} else {
 			k = read();
 			printf("%lld\n", query(k) + ss[k]);
