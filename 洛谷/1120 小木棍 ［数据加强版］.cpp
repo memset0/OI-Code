@@ -1,51 +1,67 @@
+// ==============================
+//  author: memset0
+//  website: https://memset0.cn
+// ==============================
 #include <bits/stdc++.h>
+#define ll long long
 using namespace std;
+
+int read() {
+    int x = 0; bool m = 0; char c = getchar();
+    while (!isdigit(c) && c != '-') c = getchar();
+    if (c == '-') m = 1, c = getchar();
+    while (isdigit(c)) x = x * 10 + c - '0', c = getchar();
+    if (m) return -x; else return x;
+}
+
 const int maxn = 70;
-int n, m, tn, sum = 0, a[maxn];
-bool find_ans = false, find_this, dis[maxn];
-bool cmp(int x, int y) {
-    return x > y;
+int n, t, x;
+int siz, lim, sum, minn;
+int a[maxn], f[maxn];
+
+bool cmp(int a, int b) {
+	return a > b;
 }
-void DFS(int u, int x) {
-    if (x == 0) {
-        find_this = 1;
-        return ;
-    }
-    if (x < 0) return;
-    for (int i = u; i <= n && !find_this; i++)
-        if (!dis[i]) {
-            dis[i] = 1;
- 			DFS(i + 1, x - a[i]);
- 			if (!find_this) dis[i] = 0;
-        }
+
+void dfs(int cnt, int sum, int cur) {
+	if (sum == siz)
+		cnt++, sum = 0, cur = a[1];
+	if (cnt == lim) {
+		printf("%d\n", siz);
+		exit(0);
+	}
+	for (int i = cur; i >= a[n]; i--)
+		if (f[i] && i + sum <= siz) {
+			f[i]--;
+			dfs(cnt, sum + i, i);
+			f[i]++;
+			if (sum + i == siz || sum == 0)
+				return;
+		}
 }
+
 int main() {
-    scanf("%d", &tn);
-    for (int i = 1; i <= tn; i++) {
-        scanf("%d", &a[++n]);
-        if (a[n] > 50) n--;
-        else sum += a[n];
-    }
-    sort(a + 1, a + n + 1, cmp);
-//	for (int i = 1; i <= n; i++)
-//		printf("%d ", a[i]);
-//	puts("");
-    for (m = 1; m <= sum && !find_ans; m++)
-        if (sum % m == 0) {
-            memset(dis, 0, sizeof(dis));
-            find_ans = true;
-            for (int i = 1; i <= (sum / m); i++) {
-                find_this = false;
-                DFS(1, m);
-                if (!find_this) {
-                    find_ans = false;
-                    break;
-                }
-            }
-//			for (int i = 1; i <= n; i++)
-//				printf("%d", dis[i]);
-//			puts("");
-        }
-    printf("%d\n", m - 1);
-    return 0;
+//	freopen("INPUT", "r", stdin);
+	
+	t = read();
+	for (int i = 1; i <= t; i++) {
+		x = read();
+		if (x <= 50) a[++n] = x;
+	}
+
+	sort(a + 1, a + n + 1, cmp);
+	for (int i = 1; i <= n; i++) {
+		sum += a[i];
+		f[a[i]]++;
+	}
+
+	for (int i = n; i >= 2; i--)
+		if (sum % i == 0) {
+			lim = i, siz = sum / i;
+//			printf(">> %d %d\n", lim, siz);
+			dfs(0, 0, a[1]);
+		}
+	printf("%d\n", sum);
+	
+	return 0;
 }
