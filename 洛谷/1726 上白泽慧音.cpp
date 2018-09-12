@@ -16,7 +16,8 @@ int read() {
 
 const int maxn = 5010, maxm = 100010;
 
-int n, m, u, v, w;
+int n, m, u, v, w, tim, top;
+int dfn[maxn], low[maxn], ins[maxn], stk[maxn], ans[maxn], now[maxn];
 int tot = 2, hed[maxn], nxt[maxm], to[maxm];
 
 void add_edge(int u, int v) {
@@ -28,7 +29,7 @@ void tarjan(int u) {
 	dfn[u] = low[u] = ++tim;
 	ins[u] = 1, stk[++top] = u;
 	for (int i = hed[u], v = to[i]; i; i = nxt[i], v = to[i]) {
-		if (!vis[v]) {
+		if (!dfn[v]) {
 			tarjan(v);
 			low[u] = min(low[u], low[v]);
 		} else if (ins[v]) {
@@ -39,26 +40,37 @@ void tarjan(int u) {
 		now[0] = 0;
 		while (top) {
 			int v = stk[top--];
-			now[++now] = v;
+			ins[v] = 0;
+			now[++now[0]] = v;
 			if (v == u) break;
 		}
 		sort(now + 1, now + now[0] + 1);
-		if (now[0] < ans[0] || (now[0] == ans[0] && now[1] < ans[1]))
+		if (now[0] > ans[0] || (now[0] == ans[0] && now[1] < ans[1])) {
+			for (int i = 0; i <= now[0]; i++)
+				ans[i] = now[i];
+		}
 	}
 }
 
 int main() {
+//	freopen("INPUT", "r", stdin);
 	
 	n = read(), m = read();
 	for (int i = 1; i <= m; i++) {
 		u = read(), v = read(), w = read();
 		add_edge(u, v);
-		if (w ^ 1) add_edge(v, u);
+		if (w == 2)
+			add_edge(v, u);
 	}
 	
 	for (int i = 1; i <= n; i++)
 		if (!dfn[i])
 			tarjan(i);
-		
+	
+	printf("%d\n", ans[0]);
+	for (int i = 1; i <= ans[0]; i++)
+		printf("%d ", ans[i]);
+	putchar('\n');
+	
 	return 0;
 }
