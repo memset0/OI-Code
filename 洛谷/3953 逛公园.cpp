@@ -1,4 +1,4 @@
-	// ==============================
+// ==============================
 //  author: memset0
 //  website: https://memset0.cn
 // ==============================
@@ -16,75 +16,143 @@ int read() {
 
 const int maxn = 100010, maxm = 200010;
 
-int n, m, k, p, u, v, w, l, r, t;
-int ans;
-int f[maxn][51], dis[maxn], q[maxn * 100];
-bool vis[maxn][51], inq[maxn];
-int tot = 2, hed[maxn], nxt[maxm], to[maxm], val[maxm];
+int n, m, p, u, k, v, w, l, r, t;
+int ans, tim, flag;
+int dis[maxn], disn[maxn], q[maxn * 100], id[maxn], f[maxn][51], ind[maxn], ord[maxn];
+bool inq[maxn];
 
-void add_edge(int u, int v, int w) {
-	nxt[tot] = hed[u], to[tot] = v, val[tot] = w;
-	hed[u] = tot++;
-}
-
-int dfs(int u, int p) {
-	printf("%d %d %d %d\n", u, p, f[u][p], vis[u][p]);
-	if (vis[u][p]) return -1;
-	if (f[u][p]) return f[u][p];
-	vis[u][p] = 1;
-	for (int i = hed[u]; i; i = nxt[i]) {
-		int v = to[i];
-		int q = dis[u] + p + val[i] - dis[v];
-		if (q <= k) {
-			printf("%d %d => %d %d\n", u, p, v, q);
-			int ret = dfs(v, q);
-			f[u][p] += ret;
-		}
+struct graph {
+	int tot, hed[maxn], nxt[maxm], to[maxm], val[maxm];
+	inline void add_edge(int u, int v, int w) {
+		nxt[tot] = hed[u], to[tot] = v, val[tot] = w;
+		hed[u] = tot++;
 	}
-	return f[u][p];
-	vis[u][p] = 0;
-}
+} h, g, z;
 
-void spfa() {
-	l = r = 1, q[1] = 1, dis[1] = 0, inq[1] = 1;
-	while (l <= r) {
-		u = q[l++], inq[u] = 0;
-		for (int i = hed[u]; i; i = nxt[i]) {
-			v = to[i];
-			if (!~dis[v] || dis[v] > dis[u] + val[i]) {
-				dis[v] = dis[u] + val[i];
-				if (!inq[v]) {
-					inq[v] = 1;
-					q[++r] = v;
-				}
-			}
-		}
-	}
+
+bool cmp(int a, int b) {
+	if (dis[a] != dis[b]) return dis[a] < dis[b];
+	return ord[a] < ord[b];
 }
 
 int main() {
-	freopen("INPUT", "r", stdin);
+//	freopen("INPUT", "r", stdin);
+//	freopen("OUTPUT", "w", stdout);
 	
 	t = read();
 	while (t--) {
-		tot = 2, ans = 0;
-		memset(f, 0, sizeof(f));
-		memset(hed, 0, sizeof(hed));
+		z.tot = h.tot = g.tot = 2, ans = tim = flag = 0;
+		memset(h.hed, 0, sizeof(h.hed));
+		memset(g.hed, 0, sizeof(g.hed));
+		memset(z.hed, 0, sizeof(g.hed));
 		memset(dis, -1, sizeof(dis));
+		memset(ind, 0, sizeof(dis));
+		memset(disn, -1, sizeof(disn));
+		memset(f, 0, sizeof(f));
 		
 		n = read(), m = read(), k = read(), p = read();
 		for (int i = 1; i <= m; i++) {
 			u = read(), v = read(), w = read();
-			add_edge(u, v, w);
+			g.add_edge(u, v, w);
+			h.add_edge(v, u, w);
+			if (!w) {
+				z.add_edge(u, v, 0);
+				ind[v]++;
+			}	
 		}
 		
-		spfa();
-		f[n][0] = 1;
-		dfs(1, 0);
+		
+		l = r = 1, q[1] = 1, dis[1] = 0, inq[1] = 1;
+		while (l <= r) {
+			u = q[l++], inq[u] = 0;
+			for (int i = g.hed[u]; i; i = g.nxt[i]) {
+				v = g.to[i];
+				if (!~dis[v] || dis[v] > dis[u] + g.val[i]) {
+					dis[v] = dis[u] + g.val[i];
+					if (!inq[v]) {
+						inq[v] = 1;
+						q[++r] = v;
+					}
+				}
+			}
+		}
+		l = r = 1, q[1] = n, disn[n] = 0, inq[n] = 1;
+		while (l <= r) {
+			u = q[l++], inq[u] = 0;
+			for (int i = g.hed[u]; i; i = g.nxt[i]) {
+				v = g.to[i];
+				if (!~disn[v] || disn[v] > disn[u] + g.val[i]) {
+					disn[v] = disn[u] + g.val[i];
+					if (!inq[v]) {
+						inq[v] = 1;
+						q[++r] = v;
+					}
+				}
+			}
+		}
+		
+		l = 1, r = 0;
+		for (int i = 1; i <= n; i++)
+			if (!ind[i])
+				q[++r] = i;
+//		for (int i = 1; i <= n; i++)
+//			printf("%d ", ind[i]);
+//		puts("");
+		while (l <= r) {
+			u = q[l++], ord[u] = ++tim;
+//			printf("%d : %d\n", u, ind[u]);
+			for (int i = z.hed[u]; i; i = z.nxt[i]) {
+				v = z.to[i];
+//				printf("%d -> %d : %d %d\n", u, v, i, z.nxt[i]);
+				if (ind[v]) {
+					ind[v]--;
+					if (!ind[v])
+						q[++r] = v;
+				}
+			}
+		}
+		for (int i = 1; i <= n; i++)
+			if (ind[i] && dis[i] + disn[i] <= dis[n] + k) {
+				printf("-1\n");
+				flag = 1;
+				break;
+			}
+//		for (int i = 1; i <= n; i++)
+//			printf("%d ", ind[i]);
+//		puts("");
+		if (flag) continue;
+		
+//		for (int i = 1; i <= n; i++)
+//			printf("%d ", dis[i]);
+//		puts("");
+		for (int i = 1; i <= n; i++)
+			id[i] = i;
+		sort(id + 1, id + n + 1, cmp);
+		
+		f[1][0] = 1;
+		for (int q = 0; q <= k; q++)
+			for (int i = 1; i <= n; i++) {
+				u = id[i];
+				if (!~dis[u]) continue;
+				for (int j = h.hed[u]; j; j = h.nxt[j]) {
+					v = h.to[j];
+					if (!~dis[v]) continue;
+					w = dis[v] + h.val[j] - dis[u];
+//					printf("%d -> %d : %d\n", v, u, t);
+					(f[u][q] += q >= w ? f[v][q - w] : 0) %= p;
+				}
+			}
+		
+//		for (int i = 1; i <= n; i++) {
+//			for (int j = 0; j <= k; j++)
+//				printf("%d ", f[i][j]);
+//			puts("");
+//		}
 		for (int i = 0; i <= k; i++)
-			ans += f[1][i];
+			(ans += f[n][i]) %= p;
 		printf("%d\n", ans);
 		
 	}
+	
 	return 0;
 }
