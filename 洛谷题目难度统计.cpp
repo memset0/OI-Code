@@ -32,10 +32,11 @@ char* strfind(char *text, char *temp) {
 			if (text[i + j] == 0 || text[i + j] != temp[j])
 				break;
         if (j == l)
-			return text+i+l;
+			return text + i + l;
     }
     return 0;
 }
+
 void UTF8ToANSI(char *str) { // 将获取到的 UTF8 格式的网页源码转换为 ANSI 格式 
     int len = MultiByteToWideChar(CP_UTF8, 0, str, -1, 0, 0);
     WCHAR *wsz = new WCHAR[len+1];
@@ -51,6 +52,8 @@ char name[32];
 int count[9];
 
 int GetProblemDifficulty(char *file) { // 获得当前题目的难度 
+	file = strfind(file, "\xE9\x9A\xBE\xE5\xBA\xA6");
+	if (file == NULL) return 8;
     file = strfind(file, "lg-bg-");
     if (file[0] == 'r') return 0;
 	if (file[0] == 'o') return 1;
@@ -81,7 +84,7 @@ void Output(char *prob, int diff) { // 输出
 	SetConsoleCursorPosition(hOutput, pos); 
     printf("%s 的统计: %s > %s        \n", name, prob, DifficultyName[diff]);
 	for (int i = 0; i < 9; i++) {
-		printf("  %s:%s%6d\n", DifficultyName[i], DifficultySpace[i], count[i]);
+		printf("    %s:%s%6d\n", DifficultyName[i], DifficultySpace[i], count[i]);
 	}
 }
 
@@ -100,15 +103,17 @@ void problem(char *str) {
     ReadFile(hFile,file,len,&unused,0);
     file[len] = file[len+1] = 0;
     CloseHandle(hFile);
-    file = strfind(file, "\xE9\x9A\xBE\xE5\xBA\xA6");
-    if (file) {	
-		int diff = GetProblemDifficulty(file);
-		count[diff]++; 
-		Output(prob, diff);
-	} else {
-		count[8]++;
-		Output(prob, 8);
-	}
+	int diff = GetProblemDifficulty(file);
+	count[diff]++; 
+	Output(prob, diff);
+//    if (file) {	
+//		int diff = GetProblemDifficulty(file);
+//		count[diff]++; 
+//		Output(prob, diff);
+//	} else {
+//		count[8]++;
+//		Output(prob, 8);
+//	}
     delete []ptr;
 }
 
@@ -131,7 +136,7 @@ int main() {
     UTF8ToANSI(file);
     sprintf(user,"U%d ",uid);
     ptr = strfind(file,user);
-    if (ptr != nullptr) {
+    if (ptr != NULL) {
         while (ptr[0] != '<' || ptr[1] != '/' || ptr[2] != 'h')
 			name[i++] = *ptr++;
         printf("\n%s 的统计: ",name);
