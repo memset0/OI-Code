@@ -82,10 +82,9 @@ char DifficultySpace[9][32] = { "     ", "        ", "   ", "   ", "  ", "    ",
 void Output(char *prob, int diff) { // 输出 
     COORD pos = {0,2};
 	SetConsoleCursorPosition(hOutput, pos); 
-    printf("%s 的统计: %s > %s        \n", name, prob, DifficultyName[diff]);
-	for (int i = 0; i < 9; i++) {
+    printf("%s 的统计: %s > %s           \n", name, prob, DifficultyName[diff]);
+	for (int i = 0; i < 9; i++)
 		printf("    %s:%s%6d\n", DifficultyName[i], DifficultySpace[i], count[i]);
-	}
 }
 
 void problem(char *str) {
@@ -93,27 +92,20 @@ void problem(char *str) {
     DWORD unused;
     char prob[32],url[128],*file,*ptr;
     HANDLE hFile;
-    while(*str != '<')prob[i++] = *str++;
+    while (*str != '<')
+		prob[i++] = *str++;
     prob[i] = 0;
     sprintf(url, "https://www.luogu.org/problemnew/show/%s", prob);
-    URLDownloadToFile(0,url,"download.tmp",0,0);
-    hFile = CreateFile("download.tmp",GENERIC_READ,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
+    URLDownloadToFile(0, url, "download.tmp", 0, 0);
+    hFile = CreateFile("download.tmp", GENERIC_READ, FILE_SHARE_READ, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
     len = GetFileSize(hFile,0);
     file = ptr = new char[len+3];
     ReadFile(hFile,file,len,&unused,0);
     file[len] = file[len+1] = 0;
     CloseHandle(hFile);
 	int diff = GetProblemDifficulty(file);
-	count[diff]++; 
+	count[diff]++;
 	Output(prob, diff);
-//    if (file) {	
-//		int diff = GetProblemDifficulty(file);
-//		count[diff]++; 
-//		Output(prob, diff);
-//	} else {
-//		count[8]++;
-//		Output(prob, 8);
-//	}
     delete []ptr;
 }
 
