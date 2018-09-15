@@ -14,9 +14,17 @@ int read() {
     if (m) return -x; else return x;
 }
 
-const int maxn = 10010;
+const int maxn = 10010, maxm;
 
 int n, m, q, 
+
+struct edge {
+	int u, v;
+	edge () {}
+	edge (int a, int b) {
+		u = a, v = b;
+	}
+} e[maxm];
 
 void tarjan(int u)
 
@@ -34,6 +42,10 @@ int main() {
 	for (int i = 1; i <= n; i++)
 		siz[id[i]]++;
 	for (int i = 1; i <= m; i++) {
+		u = e[i].u, v = e[i].v;
+		if (id[u] ^ id[v]) {
+			
+		}
 	}
 	q = read();
 	
