@@ -3,6 +3,7 @@
 *.out
 *.txt
 *.bat
+*.ini
 INPUT
 OUTPUT
 private/*
