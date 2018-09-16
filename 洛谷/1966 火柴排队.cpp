@@ -1,28 +1,59 @@
+// ==============================
+//  author: memset0
+//  website: https://memset0.cn
+// ==============================
 #include <bits/stdc++.h>
-#define isnum(x) ('0' <= x && x <= '9')
-#define read(x) do { \
-	x = 0, r::c = getchar(), r::m = 1; \
-	while (!isnum(r::c) && r::c != '-') r::c = getchar(); \
-	if (r::c == '-') r::c = getchar(), r::m = -1; \
-	while (isnum(r::c)) x = x * 10 + r::c - '0', r::c = getchar(); \
-	x *= r::m; \
-} while (false) 
-namespace r { char c; int m; }
+#define ll long long
 using namespace std;
 
-#define sqr(x) ( (x) * (x) )
+int read() {
+    int x = 0; bool m = 0; char c = getchar();
+    while (!isdigit(c) && c != '-') c = getchar();
+    if (c == '-') m = 1, c = getchar();
+    while (isdigit(c)) x = x * 10 + c - '0', c = getchar();
+    if (m) return -x; else return x;
+}
+
+#define lowbit(x) ((x)&(-(x)))
+
 const int maxn = 1000010;
-int n, a[maxn], b[maxn];
+const int P = 99999997;
+
+int n, ans, loc[maxn], s[maxn];
+
+struct node {
+	int v, i;
+} a[maxn], b[maxn];
+
+bool cmp(const node &a, const node &b) {
+	return a.v < b.v;
+}
+
+void upd(int x) {
+	for (int i = x; i <= n; i += lowbit(i))
+		s[i] += 1;
+}
+int ask(int x) {
+	int ans = 0;
+	for (int i = x; i >= 1; i -= lowbit(i))
+		ans += s[i];
+	return ans;
+}
 
 int main() {
-	
-	read(n);
+	n = read();
 	for (int i = 1; i <= n; i++)
-		read(a[i]);
+		a[i].v = read(), a[i].i = i;
 	for (int i = 1; i <= n; i++)
-		read(b[i]);
-	
-	for (int i = 1; i <= n; i+)
-	
+		b[i].v = read(), b[i].i = i;
+	sort(a + 1, a + n + 1, cmp);
+	sort(b + 1, b + n + 1, cmp);
+	for (int i = 1; i <= n; i++)
+		loc[b[i].i] = a[i].i;
+	for (int i = n; i >= 1; i--) {
+		ans = (ans + ask(loc[i])) % P;
+		upd(loc[i]);
+	}
+	printf("%d\n", ans);
 	return 0;
 }
