@@ -65,11 +65,11 @@ int main() {
 //	freopen("OUTPUT", "w", stdout);
 
 	T = read(), n = read();
-	for (int i = 0; i <= 25; i++)
-		for (int j = 0; j <= 25; j++)
+	for (int k = 0; k <= 2; k++)
+		for (int q = 0; q <= 25; q++)
 			for (int p = 0; p <= 25; p++)
-				for (int q = 0; q <= 25; q++)
-					for (int k = 0; k <= 2; k++) {
+				for (int j = 0; j <= 25; j++)
+					for (int i = 0; i <= 25; i++) {
 						f[i][j][p][q][k] = i + j + p + q + k;
 						#define upd(a, b, c, d, e)\
 							if (a >= 0 && b >= 0 && c >= 0 && d >= 0 && e >= 0)\
@@ -87,6 +87,14 @@ int main() {
 						upd(i, j, p, q - 1, k - 2);
 						upd(i - 2, j, p, q - 1, k);
 						upd(i, j - 2, p, q - 1, k);
+						if (k) f[i][j][p][q][k] = min(f[i][j][p][q][k], f[i + 1][j][p][q][k - 1]);
+						if (j) f[i][j][p][q][k] = min(f[i][j][p][q][k], f[i + 2][j - 1][p][q][k]);
+						if (p) f[i][j][p][q][k] = min(f[i][j][p][q][k], f[i + 3][j][p - 1][q][k]);
+						if (q) f[i][j][p][q][k] = min(f[i][j][p][q][k], f[i + 4][j][p][q - 1][k]);
+						if (q) f[i][j][p][q][k] = min(f[i][j][p][q][k], f[i][j + 2][p][q - 1][k]);
+						if (p) f[i][j][p][q][k] = min(f[i][j][p][q][k], f[i + 1][j + 1][p - 1][q][k]);
+						if (q) f[i][j][p][q][k] = min(f[i][j][p][q][k], f[i + 2][j + 1][p][q - 1][k]);
+						if (q) f[i][j][p][q][k] = min(f[i][j][p][q][k], f[i + 1][j][p + 1][q - 1][k]);
 //						printf("%d %d %d %d %d : %d\n", i, j, p, q, k, f[i][j][p][q][k]);
 					}
 	while (T--) {
