@@ -4,7 +4,6 @@
 // ==============================
 #include <bits/stdc++.h>
 #define ll long long
-using namespace std;
 
 int read() {
     int x = 0; bool m = 0; char c = getchar();
@@ -14,65 +13,87 @@ int read() {
     if (m) return -x; else return x;
 }
 
-const int maxn = 100010, maxm = maxn * 22;
-int n, m, a, b, opt;
-int tot, hed[maxn], num[maxm], lc[maxm], rc[maxm];
+const int maxn = 100010, maxm = 200010, maxl = 2200010;
 
-void build(int &u, int l, int r) {
-	u = ++tot;
-	if (l == r) {
-		num[u] = l;
-		return;
+int n, m, u, v, k, i, pos, opt;
+
+struct pair {
+	int fa, siz;
+	pair() {}
+	pair(int a, int b)  {
+		fa = a, siz = b;
 	}
-	int mid = (l + r) >> 1;
-	build(lc[u], l, mid);
-	build(rc[u], mid + 1, r);
-}
+} x, y;
 
-void modify(int &p, int q, int loc, int val, int l, int r) {
-	p = ++tot;
-	if (l == r) {
-		num[p] = val;
-		return;
+struct SEG {
+	int pos;
+	int root[maxm], lc[maxl], rc[maxl], val[maxl];
+	bool flag;
+	void build(int &u, int l, int r) {
+		u = ++pos;
+		if (l == r) { val[u] = flag ? l : 1; return; }
+		int mid = (l + r) >> 1;
+		build(lc[u], l, mid);
+		build(rc[u], mid + 1, r);
 	}
-	int mid = (l + r) >> 1;
-	if (loc <= mid) rc[p] = rc[q], modify(lc[p], lc[q], loc, val, l, mid);
-	else lc[p] = lc[q], modify(rc[p], rc[q], loc, val, mid + 1, r);
-}
-
-int query(int u, int loc, int l, int r) {
-	if (l == r) {
-		return num[u];
+	int query(int u, int l, int r, int k) {
+		if (l == r) return val[u];
+		int mid = (l + r) >> 1;
+		if (k <= mid) return query(lc[u], l, mid, k);
+		else return query(rc[u], mid + 1, r, k);
 	}
-	int mid = (l + r) >> 1;
-	if (loc <= mid) return query(lc[u], loc, l, mid);
-	else return query(rc[u], loc, mid + 1, r);
-}
+	void modify(int &u, int v, int l, int r, int k, int c) {
+		u = ++pos, lc[u] = lc[v], rc[u] = rc[v];
+		if (l == r) { val[u] = c; return; }
+		int mid = (l + r) >> 1;
+		if (k <= mid) modify(lc[u], lc[v], l, mid, k, c);
+		else modify(rc[u], rc[v], mid + 1, r, k, c);
+	}
+} fa, siz;
 
-int find(int ver, int x) {
-	int ret = query(hed[ver], x, 1, n);
-	if (ret == x) return x;
-	else return find(ver, ret);
+pair find(int root1, int root2, int u) {
+	int f = fa.query(root1, 1, n, u);
+	if (u == f) return pair(f, siz.query(root2, 1, n, u));
+	return find(root1, root2, f);
 }
 
 int main() {
-	freopen("INPUT", "r", stdin);
 	
 	n = read(), m = read();
-	build(hed[0], 1, n);
-	for (int i = 1; i <= m; i++) {
+	fa.flag = 1, siz.flag = 0;
+	fa.build(fa.root[0], 1, n);
+	siz.build(siz.root[0], 1, n);
+	for (i = 1; i <= m; i++) {
+		fa.root[i] = fa.root[i - 1], siz.root[i] = siz.root[i - 1];
 		opt = read();
 		if (opt == 1) {
-			a = read(), b = read();
-			modify(hed[i], hed[i - 1], find(i - 1, a), find(i - 1, b), 1, n);
+			u = read(), v = read();
+			x = find(fa.root[i], siz.root[i], u);
+			y = find(fa.root[i], siz.root[i], v);
+			if (x.fa != y.fa) {
+				if (x.siz > y.siz) std::swap(x, y);
+				fa.modify(fa.root[i], fa.root[i - 1], 1, n, x.fa, y.fa);
+				siz.modify(siz.root[i], siz.root[i - 1], 1, n, y.fa, x.siz + y.siz);
+			} 
 		} else if (opt == 2) {
-			ver = read();
-			hed[i] = hed[ver];
+			k = read();
+			fa.root[i] = fa.root[k];
+			siz.root[i] = siz.root[k];
 		} else {
-			
+			u = read(), v = read();
+			x = find(fa.root[i], siz.root[i], u);
+			y = find(fa.root[i], siz.root[i], v);
+//			printf("%d %d : %d %d : %d %d\n", u, v, x.fa, y.fa, x.siz, y.siz);
+			if (x.fa == y.fa) puts("1");
+			else puts("0");
 		}
 	}
-	
+
 	return 0;
 }
+/*
+5 2
+1 2 4
+3 4 1
 
+*/
