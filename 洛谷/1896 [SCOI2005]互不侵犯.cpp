@@ -14,23 +14,13 @@ int read() {
 	if (m) return -x; else return x;
 }
 
-int n, a;
-ll ans;
-priority_queue < int > q;
+const int maxn = 10;
+
+int n, k, f[530][530];
 
 int main() {
-	
-	n = read();
-	for (int i = 1; i <= n; i++) {
-		a = read();
-		q.push(a);
-		if (a <= q.top()) {
-			ans += q.top() - a;
-			q.pop(), q.push(a); 
-		}
-	}
-	printf("%lld\n", ans);
-
+	n = read(), k = read();
+	for (int i = 1; i <= n; )
 	return 0;
 }
 
