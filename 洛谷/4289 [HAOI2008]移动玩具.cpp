@@ -1,6 +1,7 @@
 // ==============================
 //  author: memset0
 //  website: https://memset0.cn
+//  note: _rqy 又强又可爱
 // ==============================
 #include <bits/stdc++.h>
 #define ll long long
@@ -23,46 +24,16 @@ template <typename T> inline void print(T x, char c = '\n') {
 	} putc(c);
 }
 
-const int maxn = 900010;
-
-int n, m, hei;
-ll sum, ans, a[maxn];
-struct status {
-	ll v;
-	int h;
-	status () {}
-	status (ll a, int b) { v = a, h = b; }
-	bool operator < (const status &b) const {
-		if (v == b.v) return h > b.h;
-		return v > b.v;
-	}
-};
-std::priority_queue < status > q;
-
 int main() {
 //	freopen("INPUT", "r", stdin);
 //	freopen("OUTPUT", "w", stdout);
-
-	read(n), read(m);
-	for (int i = 1; i <= n; i++)
-		read(a[i]);
-	if (m != 2) while (n % (m - 1) != 1) n++;
-	for (int i = 1; i <= n; i++)
-		q.push(status(a[i], 0));
-	while (q.size() >= m) {
-		sum = hei = 0;
-		for (int i = m; i; i--) {
-			sum += q.top().v;
-			hei = std::max(q.top().h, hei);
-//			printf("pop(%d %d)\n", q.top().v, q.top().h);
-			q.pop();
-		}
-		ans += sum;
-//		printf("push(%d %d)\n", sum, hei + 1);
-		q.push(status(sum, hei + 1));
-	}
-	print(ans, '\n');
-	print(q.top().h, '\n');
+	for (int i = 0; i < 4; i++)
+		for (int j = 0; j < 4; j++)
+			scanf("%1d", &a[i][j]);
+	for (int i = 0; i < 4; i++)
+		for (int j = 0; j < 4; j++)
+			scanf("%1d", &b[i][j]);
+	
 
 	return 0;
 }

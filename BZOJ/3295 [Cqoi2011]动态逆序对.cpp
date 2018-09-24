@@ -14,7 +14,12 @@ int read() {
 	if (m) return -x; else return x;
 }
 
-const int maxn = 100010, maxm = maxn * 400;
+void write(ll x) {
+	if (x > 9) write(x / 10);
+	putchar(x % 10 + '0');
+}
+
+const int maxn = 100010, maxm = maxn * 200;
 
 #define lowbit(x) ((x)&(-(x)))
 
@@ -31,7 +36,7 @@ void modifySEG(int &u, int l, int r, int x, int v) {
 	else modifySEG(rc[u], mid + 1, r, x, v);
 }
 
-void modify(int k) {
+inline void modify(int k) {
 	for (int i = k; i <= n; i += lowbit(i))
 		modifySEG(root[i], 1, n, a[k], -1);
 }
@@ -46,7 +51,7 @@ int querySEG(int u, int l, int r, int ql, int qr) {
 		querySEG(rc[u], mid + 1, r, mid + 1, qr);
 }
 
-int query(int l, int r, int ql, int qr) {
+inline int query(int l, int r, int ql, int qr) {
 	if (l > r || ql > qr) return 0;
 	ll sum = 0;
 	for (int i = r; i; i -= lowbit(i))
@@ -60,12 +65,14 @@ int query(int l, int r, int ql, int qr) {
 
 int main() {
 //	freopen("INPUT", "r", stdin);
+//	freopen("OUTPUT", "w", stdout);
 	
 	n = read(), m = read();
 	for (int i = 1; i <= n; i++) {
 		a[i] = read();
 		b[a[i]] = i;
 	}
+//	std::cerr << std::clock() << std::endl;
 	
 	for (int i = n; i >= 1; i--) {
 		for (int j = a[i]; j; j -= lowbit(j))
@@ -75,15 +82,16 @@ int main() {
 		for (int j = i; j <= n; j += lowbit(j))
 			modifySEG(root[j], 1, n, a[i], 1);
 	}
+//	std::cerr << std::clock() << std::endl;
 	
 	for (int i = 1; i <= m; i++) {
-		printf("%lld\n", ans);
+		write(ans), putchar('\n');
 		u = read();
 		ans -= query(1, b[u] - 1, u + 1, n);
 		ans -= query(b[u] + 1, n, 1, u - 1);
 		modify(b[u]);
 	}
+//	std::cerr << std::clock() << std::endl;
 
 	return 0;
 }
-
