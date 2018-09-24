@@ -55,24 +55,35 @@ bool spfa() {
 }
 
 int main() {
+	freopen("INPUT", "r", stdin);
 	
-	n = read(), s = (n << 1) + 1, e = s + 1;
+	n = read(), s = n + 2, e = n + 3;
 	for (int i = 1; i <= n; i++)
 		a[i] = read();
 	p = read(), t1 = read(), v1 = read(), t2 = read(), v2 = read();
 	
+//	for (int i = 1; i <= n; i++)
+//		add_edge(i, i + n, inf - a[i], 0);
+//	for (int i = 1; i < n; i++)
+//		add_edge(i + n, i + 1, inf, 0);
+//	for (int i = 1; i + t1 <= n; i++)
+//		add_edge(i + n, i + t1, inf, v1);
+//	for (int i = 1; i + t2 <= n; i++)
+//		add_edge(i + n, i + t2, inf, v2);
+//	for (int i = 1; i <= n; i++)
+//		add_edge(s, i, inf, p);
+//	add_edge(s, 1, inf, 0);
+//	add_edge(n * 2, e, inf, 0);
 	for (int i = 1; i <= n; i++)
-		add_edge(i, i + n, inf - a[i], 0);
-	for (int i = 1; i < n; i++)
-		add_edge(i + n, i + 1, inf, 0);
-	for (int i = 1; i + t1 - 1 <= n; i++)
-		add_edge(i + n, i + t1 - 1, inf, v1);
-	for (int i = 1; i + t2 - 1 <= n; i++)
-		add_edge(i + n, i + t2 - 1, inf, v2);
-	for (int i = 1; i <= n; i++)
+		add_edge(i, i + 1, inf - a[i], 0);
+	for (int i = 2; i + t1 <= n + 1; i++)
+		add_edge(i, i + t1 + 1, inf, v1);
+	for (int i = 2; i + t2 <= n + 1; i++)
+		add_edge(i, i + t2 + 1, inf, v2);
+	for (int i = 1; i <= n + 1; i++)
 		add_edge(s, i, inf, p);
 	add_edge(s, 1, inf, 0);
-	add_edge(n * 2, e, inf, 0);
+	add_edge(n + 1, e, inf, 0);
 	
 	while (spfa()) {
 		flow = inf;
