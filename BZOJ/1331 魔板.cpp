@@ -132,8 +132,8 @@ int main() {
 //						printf("%d ", v.a[i]);
 //					puts("");
 					print(v.stp, '\n');
-					dfs(v.val);
-					putc('\n');
+//					dfs(v.val);
+//					putc('\n');
 					return 0;
 				}
 			}
