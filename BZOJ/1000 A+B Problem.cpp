@@ -1,7 +1,7 @@
 // ==============================
 //  author: memset0
 //  website: https://memset0.cn
-//  note: _rqy 锟斤拷强锟街可帮拷
+//  note: _rqy 又强又可爱
 // ==============================
 #include <bits/stdc++.h>
 #define ll long long
@@ -23,6 +23,7 @@ template <typename T> inline void print(T x, char c = '\n') {
 		while (buf[0]) putc((char) buf[buf[0]--]);
 	} putc(c);
 }
+
 int main() {
 	
 	int a, b;
