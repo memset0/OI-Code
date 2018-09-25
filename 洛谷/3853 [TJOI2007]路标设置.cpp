@@ -23,24 +23,42 @@ template <typename T> inline void print(T x, char c = '\n') {
 	putc(c);
 }
 
-const int maxn = 50010, maxm = 1000010;
+const int maxn = 100010;
 
-int n, m = 1e6, l, r, cnt;
-int a[maxm], b[maxm];
+int n, m, l, r, mid, ans;
+int a[maxn], b[maxn];
+
+bool check(int x) {
+//	printf("check %d\n", x);
+	int sum = 0;
+	for (int i = 1; i < n; i++) {
+		sum += ((a[i] + x - 1) / x) - 1;
+//		printf("%d %d\n", sum, m);
+		if (sum > m) return false;
+	}
+	return true;
+}
 
 int main() {
+
+	read(n), read(n), read(m);
+	for (int i = 1; i <= n; i++)
+		read(b[i]);
+	for (int i = 1; i < n; i++)
+		a[i] = b[i + 1] - b[i];
 	
-	read(n);
-	for (int i = 1; i <= n; i++) {
-		read(l), read(r);
-		a[l]++, b[r]++;
+	l = 1, r = 10000001;
+	while (l <= r) {
+		mid = (l + r) >> 1;
+		if (check(mid)) {
+			r = mid - 1;
+			ans = mid;
+		} else {
+			l = mid + 1;
+		}
 	}
-	
-	for (int i = 1; i <= m; i++) {
-		if (!cnt && a[i]) printf("%d ", i);
-		cnt += a[i] - b[i];
-		if (!cnt && b[i]) printf("%d\n", i);
-	}
-	
+	printf("%d\n", ans);
+
 	return 0;
 }
+

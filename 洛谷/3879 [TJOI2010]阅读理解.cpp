@@ -1,33 +1,36 @@
+// ==============================
+//  author: memset0
+//  website: https://memset0.cn
+// ==============================
 #include <bits/stdc++.h>
-using namespace std;
-const int maxn = 10010;
-int n, m, k = 0;
-char str[100];
-map < string, int > mp;
-vector < int > vt[maxn];
+#define ll long long
+
+const int maxn = 1010;
+
+int n, m, t;
+std::string s;
+std::map < std::string, std::set < int > > map;
+std::map < std::string, std::set < int > > ::iterator it;
+
 int main() {
-	cin >> n;
+	std::ios::sync_with_stdio(false);
+	
+	std::cin >> n;
 	for (int i = 1; i <= n; i++) {
-		cin >> m;
-		for (int j = 1; j <= m; j++) {
-			scanf("%s", str);
-			if(mp.count(str)) {
-				if (i != vt[mp[str]].back()) vt[mp[str]].push_back(i);
-			} else {
-				mp[str] = ++k;
-				vt[k].push_back(i);
-			}
+		std::cin >> t;
+		for (int j = 1; j <= t; j++) {
+			std::cin >> s;
+			map[s].insert(i);
 		}
 	}
-	cin >> m;
-	int t;
+	std::cin >> m;
 	for (int i = 1; i <= m; i++) {
-		scanf("%s", str);
-		if (mp.count(str)) t = mp[str];
-		else t = 0;
-		for (int j = 0; j < vt[t].size(); j++)
-			printf("%d ", vt[t][j]);
-		puts("");
+		std::cin >> s;
+		it = map.find(s);
+		for (std::set < int > ::iterator u = it->second.begin(); u != it->second.end(); u++)
+			std::cout << (*u) << " ";
+		std::cout << std::endl;
 	}
+
 	return 0;
 }

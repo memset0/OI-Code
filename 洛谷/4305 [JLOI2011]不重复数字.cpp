@@ -23,24 +23,29 @@ template <typename T> inline void print(T x, char c = '\n') {
 	putc(c);
 }
 
-const int maxn = 50010, maxm = 1000010;
+const int maxn = 50010;
 
-int n, m = 1e6, l, r, cnt;
-int a[maxm], b[maxm];
+int T, n, x;
+std::set < int > set;
 
 int main() {
 	
-	read(n);
-	for (int i = 1; i <= n; i++) {
-		read(l), read(r);
-		a[l]++, b[r]++;
+	read(T);
+	while (T--) {
+		set.clear();
+		
+		read(n);
+		for (int i = 1; i <= n; i++) {
+			read(x);
+			if (!set.count(x)) {
+				set.insert(x);
+				printf("%d ", x);
+			}
+		}
+		putchar('\n');
+		
 	}
-	
-	for (int i = 1; i <= m; i++) {
-		if (!cnt && a[i]) printf("%d ", i);
-		cnt += a[i] - b[i];
-		if (!cnt && b[i]) printf("%d\n", i);
-	}
-	
+
 	return 0;
 }
+

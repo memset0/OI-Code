@@ -26,7 +26,19 @@ template <typename T> inline void print(T x, char c = '\n') {
 const int maxn = 200010;
 
 int n, m;
-int a[maxn], b[maxn]; 
+int a[maxn], b[maxn];
+
+void build(int &u, int l, int r) {
+	u = ++pos;
+	if (l == r) return;
+	int mid = (l + r) >> 1;
+	build(lc[u], l, mid);
+	build(rc[u], mid + 1, r);
+}
+
+void modify(int &u, int v, int l, int r, int x) {
+	u = ++pos, lc[u] = lc[v], rc[u] = rc[v], 
+}
 
 int main() {
 
