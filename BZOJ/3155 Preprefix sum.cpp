@@ -4,13 +4,23 @@
 // ==============================
 #include <bits/stdc++.h>
 #define ll long long
+#define rep(i,l,r) for (int i = l; i <= r; i++)
+#define getc(x) getchar(x)
+#define putc(x) putchar(x)
 
-int read() {
-    int x = 0; bool m = 0; char c = getchar();
-    while (!isdigit(c) && c != '-') c = getchar();
-    if (c == '-') m = 1, c = getchar();
-    while (isdigit(c)) x = x * 10 + c - '0', c = getchar();
-    if (m) return -x; else return x;
+template <typename T> inline void read(T &x) {
+	x = 0; register char ch; register bool fl = 0;
+	while (ch = getc(), ch < 48 || 57 < ch) fl ^= ch == '-'; x = (ch & 15);
+	while (ch = getc(), 47 < ch && ch < 58) x = (x << 1) + (x << 3) + (ch & 15);
+	if (fl) x = -x;
+}
+template <typename T> inline void print(T x, char c = '\n') {
+	static int buf[40];
+	if (x == 0) { putc('0'); putc(c); return; }
+	if (x < 0) putc('-'), x = -x;
+	for (buf[0] = 0; x; x /= 10) buf[++buf[0]] = x % 10 + 48;
+	while (buf[0]) putc((char) buf[buf[0]--]);
+	putc(c);
 }
 
 char readc() {
@@ -22,11 +32,12 @@ char readc() {
 const int maxn = 100010;
 
 int n, m, l, r, d, k, x;
-int a[maxn], s[maxn], ss[maxn];
+int a[maxn];
+ll s[maxn], ss[maxn];
 
-int sum[maxn << 2], tag1[maxn << 2], tag2[maxn << 2];
+ll sum[maxn << 2], tag1[maxn << 2], tag2[maxn << 2];
 
-void pushup(int val1, int val2, int l, int r, int u) {
+void pushup(ll val1, ll val2, int l, int r, int u) {
     sum[u] += val1 * (r - l + 1);
     sum[u] += val2 * (r - l) * (r - l + 1) / 2;
     tag1[u] += val1, tag2[u] += val2;
@@ -43,7 +54,7 @@ void pushdown(int l, int r, int u) {
     }
 }
 
-void modify(int ql, int qr, int val1, int val2, int l = 1, int r = n, int u = 1) {
+void modify(int ql, int qr, ll val1, ll val2, int l = 1, int r = n, int u = 1) {
 //	printf("modify %d %d %d %d %d %d %d\n", ql, qr, val1, val2, l, r, u);
     pushdown(l, r, u);
     if (ql == l && qr == r) {
@@ -60,7 +71,7 @@ void modify(int ql, int qr, int val1, int val2, int l = 1, int r = n, int u = 1)
     sum[u] = sum[u << 1] + sum[u << 1 | 1];
 }
 
-int query(int k, int l = 1, int r = n, int u = 1) {
+ll query(int k, int l = 1, int r = n, int u = 1) {
     pushdown(l, r, u);
     if (l == r) return sum[u];
     int mid = (l + r) >> 1;
@@ -70,21 +81,21 @@ int query(int k, int l = 1, int r = n, int u = 1) {
 
 int main() {
 	
-    n = read(), m = read();
+    read(n), read(m);
     for (int i = 1; i <= n; i++) {
-        a[i] = read();
+        read(a[i]);
         s[i] = s[i - 1] + a[i];
         ss[i] = ss[i - 1] + s[i];
     }
     
     for (int i = 1; i <= m; i++) {
         if (readc() == 'M') {
-            k = read(), x = read();
+            read(k), read(x);
             modify(k, n, x - a[k], x - a[k]);
             a[k] = x;
         } else {
-            k = read();
-            printf("%lld\n", query(k) + ss[k]);
+			read(k);
+            print(query(k) + ss[k]);
         }
     }
     
