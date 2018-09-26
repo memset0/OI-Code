@@ -23,39 +23,31 @@ template <typename T> inline void print(T x, char c = '\n') {
 	putc(c);
 }
 
-const int maxn = 16777216;
-const int p = 1e9 + 7;
+const int maxn = 40, maxm = 2510;
 
-#define lowbit(x) ((x)&(-(x)))
+#define at(i,j) (((i) - 1) * (m) + (j))
 
-int n, m, t, b1, b2, dis;
-int a[25], f[maxn], lg2[1 << 24];
+int n, m, p, 
 
 int main() {
-
-	read(n);
-	for (register int i = 1; i <= n; i++)
-		read(a[i]);
-	read(m);
-	if (m) read(b1);
-	if (m & 2) read(b2);
 	
-	f[0] = 1;
-	for (register int i = 1; i <= n; i++)
-		lg2[1 << (i - 1)] = i;
-	for (register int x = 1, y, t, dis; x < (1 << n); x++) {
-		y = x, dis = 0;
-		while (y) {
-			t = lowbit(y);
-			dis += a[lg2[t]];
-			f[x] += f[x ^ t];
-			if (f[x] > p) f[x] -= p;
-			y -= t;
-		}
-		if (m && dis == b1) f[x] = 0;
-		if (m & 2 && dis == b2) f[x] = 0;
-	}
-	print(f[(1 << n) - 1]);
+	read(p), read(m), read(n);
+	for (int i = 1; i <= n; i++)
+		for (int j = 1; j <= m; j++)
+			read(a[i][j]);
+	for (int i = 1; i <= n; i++)
+		for (int j = 1; j <= m; j++)
+			if (a[i + 1][j] ^ 1) {
+				if (i ^ n && a[i + 1][j] ^ 1) add_edge(at(i, j) + n * m, at(i + 1, j), inf, 0);
+				if (j ^ n && a[i][j + 1] ^ 1) add_edge(at(i, j) + n * m, at(i, j + 1), inf, 0);
+				if (a[i][j] == 2) add_edge(at(i, j), at(i, j) + n * m, 1, 1);
+			}
+	s = ((n * m) << 1) + 1, e = s + 1;
+	add_edge(s, 1, p, 0);
+	add_edge((n * m) << 1, e, inf, 0);
+	
+	while 
 
 	return 0;
 }
+

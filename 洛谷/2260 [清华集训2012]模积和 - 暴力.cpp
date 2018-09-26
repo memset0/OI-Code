@@ -23,39 +23,22 @@ template <typename T> inline void print(T x, char c = '\n') {
 	putc(c);
 }
 
-const int maxn = 16777216;
-const int p = 1e9 + 7;
+const int p = 19940417;
 
-#define lowbit(x) ((x)&(-(x)))
-
-int n, m, t, b1, b2, dis;
-int a[25], f[maxn], lg2[1 << 24];
+int n, m;
+ll ans; 
 
 int main() {
-
-	read(n);
-	for (register int i = 1; i <= n; i++)
-		read(a[i]);
-	read(m);
-	if (m) read(b1);
-	if (m & 2) read(b2);
+	freopen("INPUT", "r", stdin);
 	
-	f[0] = 1;
-	for (register int i = 1; i <= n; i++)
-		lg2[1 << (i - 1)] = i;
-	for (register int x = 1, y, t, dis; x < (1 << n); x++) {
-		y = x, dis = 0;
-		while (y) {
-			t = lowbit(y);
-			dis += a[lg2[t]];
-			f[x] += f[x ^ t];
-			if (f[x] > p) f[x] -= p;
-			y -= t;
-		}
-		if (m && dis == b1) f[x] = 0;
-		if (m & 2 && dis == b2) f[x] = 0;
-	}
-	print(f[(1 << n) - 1]);
+	read(n), read(m);
+	
+	for (int i = 1; i <= n; i++)
+		for (int j = 1; j <= m; j++)
+//			if (i ^ j) 
+				(ans += 1LL * (n % i) * (m % j)) %= p;
+
+	print(ans);
 
 	return 0;
 }
