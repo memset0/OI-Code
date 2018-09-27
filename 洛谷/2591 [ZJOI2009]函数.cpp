@@ -23,32 +23,14 @@ template <typename T> inline void print(T x, char c = ' ') {
 	putc(c);
 }
 
-int n, ans;
-int phi[40010], pri[40010];
+int n, k; 
 
 int main() {
-//	freopen("INPUT", "r", stdin);
 	
-	read(n);
-	phi[1] = 1;
-	for (int i = 2; i < n; i++) {
-		if (!phi[i]) {
-			phi[i] = i - 1;
-			pri[++pri[0]] = i;
-		}
-		for (int j = 1; j <= pri[0] && i * pri[j] < n; j++) {
-			if (i % pri[j] == 0) {
-				phi[i * pri[j]] = phi[i] * pri[j];
-				break;
-			} else {
-				phi[i * pri[j]] = phi[i] * (pri[j] - 1);
-			}
-		}
-	}
-	
-	for (int i = 1; i < n; i++)
-		ans += phi[i];
-	print(n == 1 ? 0 : ans << 1 | 1, '\n');
+	read(n), read(k);
+	if (k > (n >> 1)) k = n - k + 1;
+	print(n == 1 ? 1 : k << 1);
 
 	return 0;
 }
+

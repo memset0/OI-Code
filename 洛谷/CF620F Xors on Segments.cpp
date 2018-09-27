@@ -10,7 +10,7 @@
 
 template <typename T> inline void read(T &x) {
 	x = 0; register char ch; register bool fl = 0;
-	while (ch = getc(), ch < 48 || 57 < ch) fl ^= ch == '-'; x = (ch & 15);
+	while (ch = getc(), ch < 48 || 57 < ch) fl ^= ch == '-	 = (ch & 15);
 	while (ch = getc(), 47 < ch && ch < 58) x = (x << 1) + (x << 3) + (ch & 15);
 	if (fl) x = -x;
 }
@@ -23,32 +23,12 @@ template <typename T> inline void print(T x, char c = ' ') {
 	putc(c);
 }
 
-int n, ans;
-int phi[40010], pri[40010];
+int n, m; 
 
 int main() {
-//	freopen("INPUT", "r", stdin);
 	
-	read(n);
-	phi[1] = 1;
-	for (int i = 2; i < n; i++) {
-		if (!phi[i]) {
-			phi[i] = i - 1;
-			pri[++pri[0]] = i;
-		}
-		for (int j = 1; j <= pri[0] && i * pri[j] < n; j++) {
-			if (i % pri[j] == 0) {
-				phi[i * pri[j]] = phi[i] * pri[j];
-				break;
-			} else {
-				phi[i * pri[j]] = phi[i] * (pri[j] - 1);
-			}
-		}
-	}
 	
-	for (int i = 1; i < n; i++)
-		ans += phi[i];
-	print(n == 1 ? 0 : ans << 1 | 1, '\n');
 
 	return 0;
 }
+

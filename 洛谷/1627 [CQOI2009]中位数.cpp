@@ -23,32 +23,35 @@ template <typename T> inline void print(T x, char c = ' ') {
 	putc(c);
 }
 
-int n, ans;
-int phi[40010], pri[40010];
+const int maxn = 100010;
+
+int n, m, k, ans;
+int a[maxn], f[maxn], cnt[maxn << 1];
 
 int main() {
-//	freopen("INPUT", "r", stdin);
-	
-	read(n);
-	phi[1] = 1;
-	for (int i = 2; i < n; i++) {
-		if (!phi[i]) {
-			phi[i] = i - 1;
-			pri[++pri[0]] = i;
-		}
-		for (int j = 1; j <= pri[0] && i * pri[j] < n; j++) {
-			if (i % pri[j] == 0) {
-				phi[i * pri[j]] = phi[i] * pri[j];
-				break;
-			} else {
-				phi[i * pri[j]] = phi[i] * (pri[j] - 1);
-			}
-		}
+//	freopen("INPUT", "r", stdi	n);
+
+	read(n), read(m);
+	for (int i = 1; i <= n; i++) {
+		read(a[i]);
+		if (a[i] == m)
+			 k = i;
 	}
 	
-	for (int i = 1; i < n; i++)
-		ans += phi[i];
-	print(n == 1 ? 0 : ans << 1 | 1, '\n');
+	for (int i = k + 1; i <= n; i++)
+		f[i] = f[i - 1] + (a[i] > m ? 1 : -1);
+	for (int i = k - 1; i >= 1; i--)
+		f[i] = f[i + 1] + (a[i] > m ? -1 : 1);
+		
+	for (int i = k; i <= n; i++) 
+		cnt[f[i] + n]++;
+	for (int i = k; i >= 1; i--)
+		ans += cnt[f[i] + n];
+//	for (int i = 1; i <= n; i++)
+//		print(f[i]);
+//	putc('\n');
+		
+	print(ans, '\n');
 
 	return 0;
 }

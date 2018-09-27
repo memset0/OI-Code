@@ -23,32 +23,38 @@ template <typename T> inline void print(T x, char c = ' ') {
 	putc(c);
 }
 
-int n, ans;
-int phi[40010], pri[40010];
+const int maxn = 5010;
+
+int n, m, x, y, z, mx, my, ans;
+int s[maxn][maxn];
 
 int main() {
 //	freopen("INPUT", "r", stdin);
 	
-	read(n);
-	phi[1] = 1;
-	for (int i = 2; i < n; i++) {
-		if (!phi[i]) {
-			phi[i] = i - 1;
-			pri[++pri[0]] = i;
-		}
-		for (int j = 1; j <= pri[0] && i * pri[j] < n; j++) {
-			if (i % pri[j] == 0) {
-				phi[i * pri[j]] = phi[i] * pri[j];
-				break;
-			} else {
-				phi[i * pri[j]] = phi[i] * (pri[j] - 1);
-			}
-		}
+	read(n), read(m);
+	mx = my = m;
+	for (int i = 1; i <= n; i++) {
+		read(x), read(y), read(z);
+		++x, ++y; 
+		s[x][y] += z;
+		mx = std::max(mx, x);
+		my = std::max(my, y);
 	}
-	
-	for (int i = 1; i < n; i++)
-		ans += phi[i];
-	print(n == 1 ? 0 : ans << 1 | 1, '\n');
+	for (int i = 1; i <= mx; i++)
+		for (int j = 1; j <= my; j++)
+			s[i][j] = s[i][j] + s[i - 1][j] + s[i][j - 1] - s[i - 1][j - 1];
+	for (int i = m; i <= mx; i++)
+		for (int j = m; j <= my; j++) {
+			ans = std::max(ans, s[i][j] - s[i][j - m] - s[i - m][j] + s[i - m][j - m]);
+//			printf("%d %d -> %d\n", i, j, s[i][j] - s[0][j - m] - s[i - m][0] + s[i - m][j - m]);
+		}
+//	for (int i = 0; i <= mx; i++) { 
+//		for (int j = 0; j <= my; j++)
+//			printf("%d ", s[i][j]);
+//		puts("");
+//	}
+	printf("%d\n", ans);
 
 	return 0;
 }
+

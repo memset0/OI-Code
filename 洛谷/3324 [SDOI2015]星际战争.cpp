@@ -55,14 +55,14 @@ bool check(ll x) {
     ll ans = 0;
 //	printf("=== check %d ===\n", x);
     
-    for (int i = 1; i <= n; i++)
-        add_edge(s, i, a[i] * x);
     for (int i = 1; i <= m; i++)
-        add_edge(i + n, e, b[i] * 10000);
+        add_edge(s, i, a[i] * x);
+    for (int i = 1; i <= n; i++)
+        add_edge(i + m, e, b[i] * 10000);
     for (int i = 1; i <= n; i++)
         for (int j = 1; j <= m; j++)
             if (c[i][j])
-                add_edge(i, j + n, inf);
+                add_edge(j, i + m, inf);
 
     u = s, gap[0] = e;
     while (dep[u] < e) {
@@ -112,15 +112,15 @@ bool check(ll x) {
 int main() {
 //	freopen("INPUT", "r", stdin);
     
-    read(m), read(n);
+    read(n), read(m);
     s = n + m + 1, e = s + 1;
-    for (int i = 1; i <= m; i++)
+    for (int i = 1; i <= n; i++)
         read(b[i]);
-    for (int i = 1; i <= n; i++)
+    for (int i = 1; i <= m; i++)
         read(a[i]);
-    for (int i = 1; i <= n; i++)
-        for (int j = 1; j <= m; j++)
-            read(c[i][j]);
+    for (int i = 1; i <= m; i++)
+        for (int j = 1; j <= n; j++)
+            read(c[j][i]);
 
 //	check(1220703); 
     l = 1, r = 10000000000ll;

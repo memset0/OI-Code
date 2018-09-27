@@ -7,6 +7,7 @@
 #define rep(i,l,r) for (int i = l; i <= r; i++)
 #define getc(x) getchar(x)
 #define putc(x) putchar(x)
+#define endl ('\n')
 
 template <typename T> inline void read(T &x) {
 	x = 0; register char ch; register bool fl = 0;
@@ -23,32 +24,15 @@ template <typename T> inline void print(T x, char c = ' ') {
 	putc(c);
 }
 
-int n, ans;
-int phi[40010], pri[40010];
+std::string name = "caonima";
 
 int main() {
-//	freopen("INPUT", "r", stdin);
 	
-	read(n);
-	phi[1] = 1;
-	for (int i = 2; i < n; i++) {
-		if (!phi[i]) {
-			phi[i] = i - 1;
-			pri[++pri[0]] = i;
-		}
-		for (int j = 1; j <= pri[0] && i * pri[j] < n; j++) {
-			if (i % pri[j] == 0) {
-				phi[i * pri[j]] = phi[i] * pri[j];
-				break;
-			} else {
-				phi[i * pri[j]] = phi[i] * (pri[j] - 1);
-			}
-		}
+	while (true) {
+		std::random_shuffle(name.begin(), name.end());
+		std::cout << name << endl;
 	}
-	
-	for (int i = 1; i < n; i++)
-		ans += phi[i];
-	print(n == 1 ? 0 : ans << 1 | 1, '\n');
 
 	return 0;
 }
+
