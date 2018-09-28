@@ -24,12 +24,7 @@ template <typename T> inline void print(T x, char c = ' ') {
 	putc(c);
 }
 
-int n, m;
-
 int main() {
-	
-	read(n), read(k);
-	for (int i = 1; i <)
 
 	return 0;
 }

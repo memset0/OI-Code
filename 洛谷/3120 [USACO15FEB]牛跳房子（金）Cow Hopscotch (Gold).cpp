@@ -24,13 +24,29 @@ template <typename T> inline void print(T x, char c = ' ') {
 	putc(c);
 }
 
-int n, m;
+const int maxn = 760, mod = 1000000007;
+
+int n, m, k;
+int a[maxn][maxn], f[maxn][maxn];
 
 int main() {
 	
-	read(n), read(k);
-	for (int i = 1; i <)
+	read(n), read(m), read(k);
+	for (int i = 1; i <= n; i++)
+		for (int j = 1; j <= m; j++)
+			read(a[i][j]);
+	f[1][1] = 1;
+	for (int i = 1; i <= n; i++)
+		for (int j = 1; j <= m; j++)
+			for (int p = i + 1; p <= n; p++)
+				for (int q = j + 1; q <= m; q++)
+					if (a[i][j] ^ a[p][q]) {
+						f[p][q] += f[i][j];
+						if (f[p][q] > mod) {
+							f[p][q] -= mod;
+						}
+					}
+	print(f[n][m], endl);
 
 	return 0;
 }
-

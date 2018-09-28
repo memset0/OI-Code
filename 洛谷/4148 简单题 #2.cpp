@@ -9,6 +9,7 @@
 #define putc(x) putchar(x)
 #define endl ('\n')
 
+namespace wyl {
 template <typename T> inline void read(T &x) {
 	x = 0; register char ch; register bool fl = 0;
 	while (ch = getc(), ch < 48 || 57 < ch) fl ^= ch == '-'; x = (ch & 15);
@@ -24,13 +25,33 @@ template <typename T> inline void print(T x, char c = ' ') {
 	putc(c);
 }
 
-int n, m;
+struct point {
+	int a[2], val;
+};
+struct node {
+	int ch[2], min[2], max[2];
+	int sum, cnt;
+	point x;
+};
+
+#define lc e[u].ch[0]
+#define rc e[u].ch[1]
+
+void insert(int &u, const point &x, )
+
+bool in(int x1, int y1, int x2, int y2, in )
+
+int query(int u, int x1, int y1, int x2, int y2) {
+	if (!u) return 0;
+	if (in(e[u].min[0], e[u].min[1], e[u].max[0], e[u].max[1], x1, y1, x2, y2)) return e[u].sum;
+	if (out(e[u].min[0], e[u].min[1], e[u].max[0], e[u].max[1], x1, y1, x2, y2)) return 0;
+	return (in(e[u].x.a[0], e[u].x.a[1], e[u].x.a[0], e[u].x.a[1], x1, y1, x2, y2) ? e[u].x.val) +
+		query(lc, x1, y1, x2, y2) + query(rc, x1, y1, x2, y2);
+}
 
 int main() {
-	
-	read(n), read(k);
-	for (int i = 1; i <)
 
 	return 0;
 }
 
+} int main() { return wyl::main(); }
