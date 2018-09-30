@@ -24,13 +24,45 @@ template <typename T> inline void print(T x, char c = ' ') {
 	putc(c);
 }
 
-int n, m;
+int n, m, flag;
+ll ans, f[10][1024][100];
 
 int main() {
 	
-	read(n), read(k);
-	for (int i = 1; i <)
-
+	read(n), read(m);
+	f[0][0][0] = 1;
+	for (int i = 1; i <= n; i++) {
+		for (int x = 0; x < (1 << n); x++) {
+			flag = 0;
+			for (int j = 1; j < n; j++)
+				if ((x & (1 << (j - 1)) && (x & (1 << j)))) {
+					flag = 1;
+					break;
+				}
+			if (flag) continue;
+			for (int y = 0; y < (1 << n); y++) {
+				flag = x & y;
+				for (int j = 1; j < n && !flag; j++)
+					if (((x & (1 << (j - 1))) || (y & (1 << (j - 1)))) && ((x & (1 << j)) || (y & (1 << j))))
+						flag = 1;
+				if (flag) continue;
+				int cnt = __builtin_popcount(y);
+				for (int j = cnt; j <= m; j++) {
+					f[i][y][j] += f[i - 1][x][j - cnt];
+//					if (f[i - 1][x][j - cnt]) {
+////						printf("%d %d %d %d %d\n", i, j, x, y, cnt);
+//						printf("f[%d][%d][%d](%d) += f[%d][%d][%d](%d)\n",
+//							i, y, j, f[i][y][j],
+//							i - 1, x, j - cnt, f[i - 1][x][j - cnt]
+//							);
+//					}
+				}
+			}
+		}
+	} 
+	for (int i = 0; i < (1 << n); i++)
+		ans += f[n][i][m];
+	printf("%lld\n", ans);
+	
 	return 0;
 }
-

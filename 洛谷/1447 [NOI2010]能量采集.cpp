@@ -1,4 +1,4 @@
-// ==============================
+	// ==============================
 //  author: memset0
 //  website: https://memset0.cn
 // ==============================
@@ -24,31 +24,21 @@ template <typename T> inline void print(T x, char c = ' ') {
 	putc(c);
 }
 
-const int maxn = 100010, maxm = 200010;
-
-int n, m, u, v, ans, tot = 2;
-int f[maxn], hed[maxn], nxt[maxm], to[maxm], out[maxn], in[maxn];
-
-int dfs(int u) {
-	if (f[u]) return f[u];
-	if (!out[u] && in[u]) f[u] = 1;
-	for (int i = hed[u]; i; i = nxt[i])
-		f[u] += dfs(to[i]);
-	return f[u];
-}
+int n, m;
+ll ans, f[1000010];
 
 int main() {
-
+	
 	read(n), read(m);
-	for (int i = 1; i <= m; i++) {
-		read(u), read(v);
-		nxt[tot] = hed[u], to[tot] = v, hed[u] = tot++;
-		out[u]++, in[v]++;
+	if (n > m) std::swap(n, m);
+	for (int i = n; i >= 1; i--) {
+		f[i] = 1ll * (n / i) * (m / i);
+		for (int j = i << 1; j <= n; j += i)
+			f[i] -= f[j];
+		ans += ((i << 1) - 1) * f[i];
 	}
-	for (int i = 1; i <= n; i++)
-		if (!in[i])
-			ans += dfs(i);
 	print(ans, endl);
-
+	
 	return 0;
 }
+

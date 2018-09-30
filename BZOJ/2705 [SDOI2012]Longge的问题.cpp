@@ -24,30 +24,29 @@ template <typename T> inline void print(T x, char c = ' ') {
 	putc(c);
 }
 
-const int maxn = 100010, maxm = 200010;
+ll n, ans;
 
-int n, m, u, v, ans, tot = 2;
-int f[maxn], hed[maxn], nxt[maxm], to[maxm], out[maxn], in[maxn];
-
-int dfs(int u) {
-	if (f[u]) return f[u];
-	if (!out[u] && in[u]) f[u] = 1;
-	for (int i = hed[u]; i; i = nxt[i])
-		f[u] += dfs(to[i]);
-	return f[u];
+ll phi(ll x) {
+//	printf("phi %lld\n", x);
+	ll ans = x;
+	for (ll i = 2; i * i <= x; i++)
+		if (x % i == 0) {
+			ans = ans / i * (i - 1);
+			while (x % i == 0) x /= i;
+		}
+	if (x ^ 1) ans = ans / x * (x - 1);
+//	printf("= %lld\n", ans);
+	return ans;
 }
 
 int main() {
-
-	read(n), read(m);
-	for (int i = 1; i <= m; i++) {
-		read(u), read(v);
-		nxt[tot] = hed[u], to[tot] = v, hed[u] = tot++;
-		out[u]++, in[v]++;
-	}
-	for (int i = 1; i <= n; i++)
-		if (!in[i])
-			ans += dfs(i);
+	
+	read(n);
+	for (ll i = 1; i * i <= n; i++)
+		if (n % i == 0) {
+			if (i * i == n) ans += phi(i) * i;
+			else ans += phi(i) * (n / i) + phi(n / i) * i;
+		}
 	print(ans, endl);
 
 	return 0;
