@@ -44,6 +44,7 @@ int find() {
 }
 
 void setup(int u) {
+	printf("%d\n", u);
 	if (!vis[u]) {
 		vis[u] = 1;
 		points--;
