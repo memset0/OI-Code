@@ -26,34 +26,22 @@ template <typename T> inline void print(T x, char c = ' ') {
 	putc(c);
 }
 
-const int maxn = 1000010;
+int T, n, m, a, b, c;
 
-int n, u, v, w, tot = 2;
-int siz[maxn];
-ll ans;
-int hed[maxn], to[maxn << 1], nxt[maxn << 1];
-ll val[maxn << 1];
-
-void dfs(int u, int father) {
-	siz[u] = 1;
-	for (int i = hed[u], v = to[i]; i; i = nxt[i], v = to[i])
-		if (v ^ father) {
-			dfs(v, u);
-			ans += val[i] * abs((siz[v] << 1) - n);
-			siz[u] += siz[v];
-		}
+int solve(int n, int m, int a, int b, int c) {
+	if (m == 1 && c == 2) return -1;
+	return n - 1 + (m + 1) / 2;
 }
 
 int main() {
+//	freopen("lift.in", "r", stdin);
+//	freopen("lift.out", "w", stdout);
 	
-	read(n);
-	for (int i = 1; i < n; i++) {
-		read(u), read(v), read(w);
-		nxt[tot] = hed[u], to[tot] = v, val[tot] = w, hed[u] = tot++;
-		nxt[tot] = hed[v], to[tot] = u, val[tot] = w, hed[v] = tot++;
+	read(T);
+	while (T--) {
+		read(n), read(m), read(a), read(b), read(c);
+		print(solve(n, m, a, b, c), '\n');
 	}
-	dfs(1, 0);
-	print(ans, '\n');
 
 	return 0;
 }

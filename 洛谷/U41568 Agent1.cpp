@@ -26,34 +26,30 @@ template <typename T> inline void print(T x, char c = ' ') {
 	putc(c);
 }
 
-const int maxn = 1000010;
+const int mod = 1e9 + 7;
 
-int n, u, v, w, tot = 2;
-int siz[maxn];
-ll ans;
-int hed[maxn], to[maxn << 1], nxt[maxn << 1];
-ll val[maxn << 1];
+ll n;
 
-void dfs(int u, int father) {
-	siz[u] = 1;
-	for (int i = hed[u], v = to[i]; i; i = nxt[i], v = to[i])
-		if (v ^ father) {
-			dfs(v, u);
-			ans += val[i] * abs((siz[v] << 1) - n);
-			siz[u] += siz[v];
+ll pow(ll p) {
+	ll x = 2, s = 1;
+//	printf("pow %d ", p);
+	while (p) {
+		if (p & 1) {
+			s = s * x % mod;
 		}
+//		printf("%d", p & 1);
+		x = x * x % mod;
+		p >>= 1;
+	}
+//	printf(" = %d\n", s);
+	return s;
 }
 
 int main() {
-	
-	read(n);
-	for (int i = 1; i < n; i++) {
-		read(u), read(v), read(w);
-		nxt[tot] = hed[u], to[tot] = v, val[tot] = w, hed[u] = tot++;
-		nxt[tot] = hed[v], to[tot] = u, val[tot] = w, hed[v] = tot++;
-	}
-	dfs(1, 0);
-	print(ans, '\n');
 
+	read(n);
+	if (n <= 1) print(0, '\n');
+	else print(((n - 2) * pow(n - 1) + 1) % mod, '\n');
+	
 	return 0;
 }

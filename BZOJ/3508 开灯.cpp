@@ -60,21 +60,21 @@ void bfs(int s, int d) {
 void dp() {
 	memset(f, -1, sizeof(f));
 	f[0] = 0;
-	for (int x = 0; x < (1 << p); x++)
-		if (~f[x])
-			for (int i = 1; i <= p; i++)
-				if (!(x & (1 << (i - 1))))
-					for (int j = i + 1; j <= p; j++)
-						if (!(x & (1 << (j - 1))) && ~w[i][j]) {
-//							printf("%d -> %d : %d\n", x, x | (1 << (i - 1)) | (1 << (j - 1)), w[i][j]);
-							f[x | (1 << (i - 1)) | (1 << (j - 1))] = min(f[x | 1 << (i - 1) | (1 << (j - 1))], f[x] + w[i][j]);
-						}
+	for (int x = 1; x < (1 << p); x++) {
+		int i = 1 + (int)(log2(x & -x));
+		for (int j = 1; j <= p; j++)
+			if (x & (1 << (j - 1)) && ~w[i][j] && i ^ j)
+				if (~f[x ^ (1 << (i - 1)) ^ (1 << (j - 1))]) {
+					f[x] = min(f[x], f[x ^ (1 << (i - 1)) ^ (1 << (j - 1))] + w[i][j]);
+				}
+	}
 }
 
 int main() {
-	freopen("INPUT", "r", stdin);
+//	freopen("INPUT", "r", stdin);
 	
 	read(T);
+	
 	while (T--) {
 		for (int i = 1; i <= p; i++)
 			t[c[i]] = 0;
@@ -93,9 +93,10 @@ int main() {
 				c[++p] = i;
 		for (int i = 1; i <= p; i++)
 			bfs(c[i], i);
+//		printf(">>> %d\n", std::clock());
 		dp();
 		print(f[(1 << p) - 1], '\n');
-		printf(">>> %d\n", std::clock());
+//		printf(">>> %d\n", std::clock());
 	}
 
 	return 0;
