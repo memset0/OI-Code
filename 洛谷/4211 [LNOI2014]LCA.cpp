@@ -26,6 +26,12 @@ template <typename T> inline void print(T x, char c = ' ') {
 	putc(c);
 }
 
+const int maxn = 50010;
+
+int n, m, l, r, x, z, pos;
+int ans[maxn], top[maxn], dep[maxn], fa[maxn], id[maxn], wid[maxn], son[maxn], siz[maxn];
+int tot = 2, hed[maxn], nxt[maxn << 1], to[maxn << 1];
+
 inline void add_edge(int u, int v) {
 	nxt[tot] = hed[u], to[tot] = v, hed[u] = tot++;
 	nxt[tot] = hed[v], to[tot] = u, hed[v] = tot++;
@@ -33,14 +39,42 @@ inline void add_edge(int u, int v) {
 
 struct status {
 	int x, i, flag;
+	status () {}
+	status (int a, int b, int c) { x = a, i = b, flag = c; }
 };
+std::vector < status > todo[maxn];
+typedef std::vector < status > ::iterator iterator;
+
+void dfs1(int u) {
+	siz[u] = 1;
+	for (int i = hed[u], v = to[i]; i; i = nxt[i], v = to[i])
+		if (v ^ fa[u]) {
+			fa[v] = u;
+			dep[v] = dep[u] + 1;
+			dfs1(v);
+			siz[u] += siz[v];
+			if (siz[v] > siz[son[u]])
+				son[u] = v;
+		}
+}
+
+void dfs2(int u, int toppoint) {
+	top[u] = toppoint;
+	id[u] = ++pos, wid[id[u]] = u;
+	if (siz[u] == 1)
+		return;
+	dfs2(son[u], toppoint);
+	for (int i = hed[u], v = to[i]; i; i = nxt[i], v = to[i])
+		if (v ^ fa[u] && v ^ son[u])
+			dfs2(v, v);
+}
 
 struct node {
 	int l, r, mid;
-	int 
-}
+	ll sum, tag;
+} p[maxn << 2];
 
-void pushup(int u, int x) {
+void pushup(int u, ll x) {
 	p[u].sum += x * (p[u].r - p[u].l + 1);
 	p[u].tag += x;
 }
@@ -64,6 +98,7 @@ void build(int u, int l, int r) {
 
 void modify(int u, int l, int r) {
 	pushdown(u);
+//	printf("modify %d %d %d\n", u, l, r);
 	if (p[u].l == l && p[u].r == r) {
 		pushup(u, 1);
 		return;
@@ -77,7 +112,9 @@ void modify(int u, int l, int r) {
 	p[u].sum = p[u << 1].sum + p[u << 1 | 1].sum;
 }
 
-int query(int u, int l, int r) {
+ll query(int u, int l, int r) {
+	pushdown(u);
+//	printf("query %d %d %d %d %d %d\n", u, l, r, p[u].l, p[u].mid, p[u].r);
 	if (p[u].l == l && p[u].r == r)
 		return p[u].sum;
 	if (r <= p[u].mid) return query(u << 1, l, r);
@@ -91,16 +128,19 @@ void insert(int u) {
 		modify(1, id[top[u]], id[u]);
 		u = fa[top[u]];
 	}
-	modify(1, id[top[u]], id[u]);
+	modify(1, 1, id[u]);
 }
 
-int query(int u) {
-	int ans = 0;
+ll query(int u) {
+//	printf("query %d: ", u);
+	ll ans = 0;
 	while (top[u] ^ 1) {
 		ans += query(1, id[top[u]], id[u]);
 		u = fa[top[u]];
 	}
-	ans += query(1, id[)
+	ans += query(1, 1, id[u]);
+//	printf("%lld\n", ans);
+	return ans;
 }
 
 int main() {
@@ -110,8 +150,10 @@ int main() {
 		read(x), ++x;
 		add_edge(x, i);
 	}
+	dep[1] = 1, dfs1(1), dfs2(1, 1);
+	build(1, 1, n);
 	for (int i = 1; i <= m; i++) {
-		read(l), read(r), read(z);
+		read(l), read(r), read(z), ++l, ++r, ++z;
 		todo[r].push_back(status(z, i, 1));
 		todo[l - 1].push_back(status(z, i, -1));
 	}
@@ -119,8 +161,13 @@ int main() {
 	for (int i = 0; i <= n; i++) {
 		if (i) insert(i);
 		for (iterator it = todo[i].begin(); it != todo[i].end(); it++)
-			todo[it->i] = it->flag * query(it->x);
+			ans[it->i] += it->flag * query(it->x);
+//		for (int i = 1; i <= n; i++)
+//			print(query(1, i, i));
+//		putc('\n');
 	}
+	for (int i = 1; i <= m; i++)
+		print(ans[i] % 201314, '\n');
 	
 	return 0;
 }
