@@ -26,14 +26,19 @@ template <typename T> inline void print(T x, char c = ' ') {
 	putc(c);
 }
 
+const int maxn = 300010;
+
+int n, m, x, y, opt;
+int ch[maxn][2], fa[maxn], val[maxn], sum[maxn], rev[maxn];
+
 bool isRoot(int x) { return ch[fa[x]][0] ^ x && ch[fa[x]][1] ^ x; }
 bool getSon(int x) { return ch[fa[x]][1] == x; }
-void update(int x) { sum[x] = sum[ch[x][0]] ^ sum[ch[x][1]]] ^ val[x]; }
+void update(int x) { sum[x] = sum[ch[x][0]] ^ sum[ch[x][1]] ^ val[x]; }
 
 void rotate(int x) {
 	if (!x || !fa[x]) return;
-	int f = fa[x], fson = get_son(x);
-	int ff = fa[f], ffson = get_son(f);
+	int f = fa[x], fson = getSon(x);
+	int ff = fa[f], ffson = getSon(f);
 	int y = ch[x][fson ^ 1];
 	if (!isRoot(f)) ch[ff][ffson] = x;
 	ch[f][fson] = x, ch[x][fson ^ 1] = f;
@@ -53,9 +58,9 @@ void cleanup(int x) {
 }
 
 void splay(int x) {
-	while (!is_root(x)) {
+	while (!isRoot(x)) {
 		int f = fa[x];
-		if (!is_root(f))
+		if (!isRoot(f))
 			rotate(getSon(f) == getSon(x) ? f : x);
 		rotate(x); 
 	}
@@ -73,7 +78,9 @@ void link(int x, int y) {
 
 void cut(int x, int y) {
 	if (getRoot(x) == getRoot(y)) {
-		
+		split(x, y);
+		if (fa[x] == y && ch[y][0] == x && !ch[x][1])
+			fa[x] = ch[y][0] = 0, update(y);
 	}
 }
 
