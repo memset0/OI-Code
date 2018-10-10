@@ -27,83 +27,71 @@ template <typename T> inline void print(T x, char c = ' ') {
 }
 
 const int maxn = 100010;
-int m, x, y, z, k, v, rt, cnt, opt;
-int val[maxn], siz[maxn], rnd[maxn], ch[maxn][2];
-
-inline int newnode(int v) {
-	int u = ++cnt;
-	rnd[u] = rand(), val[u] = v, siz[u] = 1;
-	ch[u][0] = ch[u][1] = 0;
-	return u;
-}
+int n, m, l, r, x, y, z, rt;
+int siz[maxn], val[maxn], rnd[maxn], tag[maxn], ch[maxn][2];
 
 inline void update(int u) {
-	siz[u] = siz[ch[u][0]] + siz[ch[u][1]] + 1; 
+	siz[u] = siz[ch[u][0]] + siz[ch[u][1]] + 1;
+} 
+
+inline void pushdown(int u) {
+	if (tag[u]) {
+		tag[u] = 0;
+		std::swap(ch[u][0], ch[u][1]);
+		tag[ch[u][0]] ^= 1;
+		tag[ch[u][1]] ^= 1;
+	}
+}
+
+int build(int l, int r) {
+	if (l > r) return 0;
+	int mid = (l + r) >> 1;
+	val[mid] = mid, rnd[mid] = rand(), siz[mid] = 1;
+	ch[mid][0] = build(l, mid - 1), ch[mid][1] = build(mid + 1, r);
+	return update(mid), mid;
 }
 
 int merge(int x, int y) {
 	if (!x || !y) return x | y;
 	if (rnd[x] < rnd[y]) {
+		pushdown(x);
 		ch[x][1] = merge(ch[x][1], y);
 		return update(x), x;
 	} else {
+		pushdown(y);
 		ch[y][0] = merge(x, ch[y][0]);
 		return update(y), y;
 	}
 }
 
 void split(int u, int v, int &x, int &y) {
-	if (!u) return (void)(x = y = 0);
-	if (val[u] <= v) {
-		x = u;
-		split(ch[x][1], v, ch[x][1], y);
+	if (!u) return (void) (x = y = 0);
+	pushdown(u);
+	if (v > siz[ch[u][0]]) {
+		x = u, split(ch[x][1], v - siz[ch[u][0]] - 1, ch[x][1], y);
 	} else {
-		y = u;
-		split(ch[y][0], v, x, ch[y][0]);
+		y = u, split(ch[y][0], v, x, ch[y][0]);
 	}
 	return update(u);
 }
 
-int kth(int u, int k) {
-	if (k <= siz[ch[u][0]]) return kth(ch[u][0], k);
-	if (k == siz[ch[u][0]] + 1) return u;
-	return kth(ch[u][1], k - siz[ch[u][0]] - 1);
+void dfs(int u) {
+	pushdown(u);
+	if (ch[u][0]) dfs(ch[u][0]);
+	print(val[u]);
+	if (ch[u][1]) dfs(ch[u][1]);
 }
 
 int main() {
-	read(m);
+	read(n), read(m);
+	rt = build(1, n);
 	for (int i = 1; i <= m; i++) {
-		read(opt);
-		if (opt == 1) {
-			read(v);
-			split(rt, v, x, y);
-			rt = merge(merge(x, newnode(v)), y);
-		} else if (opt == 2) {
-			read(v);
-			split(rt, v, y, z);
-			split(y, v - 1, x, y);
-			y = merge(ch[y][0], ch[y][1]);
-			rt = merge(merge(x, y), z);
-		} else if (opt == 3) {
-			read(v);
-			split(rt, v - 1, x, y);
-			print(siz[x] + 1, '\n');
-			rt = merge(x, y); 
-		} else if (opt == 4) {
-			read(k);
-			print(val[kth(rt, k)], '\n');
-		} else if (opt == 5) {
-			read(v);
-			split(rt, v - 1, x, y);
-			print(val[kth(x, siz[x])], '\n');
-			rt = merge(x, y);
-		} else if (opt == 6) {
-			read(v);
-			split(rt, v, x, y);
-			print(val[kth(y, 1)], '\n');
-			rt = merge(x, y);
-		}
+		read(l), read(r);
+		split(rt, l - 1, x, y);
+		split(y, r - l + 1, y, z);
+		tag[y] ^= 1;
+		rt = merge(x, merge(y, z));
 	}
+	dfs(rt), putc('\n');
 	return 0;
 }
-
