@@ -130,7 +130,9 @@ void dfs(int u) {
 }
 
 int main() {
-	freopen("INPUT", "r", stdin);
+//	freopen("INPUT", "r", stdin);
+	freopen("3.txt", "r", stdin);
+	freopen("1.txt", "w", stdout);
 	read(n), read(m);
 	for (int i = 1; i <= n; i++) {
 		read(x), read(y);
