@@ -26,29 +26,24 @@ template <typename T> inline void print(T x, char c = ' ') {
 	putc(c);
 }
 
-const int maxn = 2010;
-int n, m, ans1, ans2;
-int a[maxn][maxn], p1[maxn][maxn], p2[maxn][maxn], f1[maxn][maxn], f2[maxn][maxn];
-
-void print(int a[maxn][maxn]) {
-	for (int i = 1; i <= n; i++) {
-		for (int j = 1; j <= m; j++)
-			printf("%3d", a[i][j]);
-		putc('\n');
-	}
+inline char readc() {
+	char ch;
+	while (ch = getchar(), ch != 'b' && ch != 'w');
+	return ch;
 }
 
-int main() {
-	freopen("INPUT", "r", stdin);
-	read(n), read(m);
-	for (int i = 1; i <= n; i++)
-		for (int j = 1; j <= m; j++)
-			read(a[i][j]);
-	for (int i = 1; i <= n; i++)
-		p1[i][1] = 1;
-	for (int i = 1; i <= n; i++)
-		for (int j = 2; j <= m; j++)
-			p1
-	return 0;
-}	
+int n, c, l = 0, r = 1000000000;
 
+signed main() {
+	read(n); --n;
+	printf("%d %d\n", 0, 100), fflush(stdout); 
+	c = readc();
+	for (int i = 1; i <= n; ++i) {
+		int mid = (l + r) >> 1;
+		printf("%d %d\n", mid, 100), fflush(stdout);
+		if (readc() != c) r = mid - 1;
+		else l = mid + 1;
+	}
+	printf("%d %d %d %d\n", l, 0, r, 200);
+	return 0;
+}

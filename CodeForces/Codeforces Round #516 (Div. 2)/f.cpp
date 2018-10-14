@@ -26,29 +26,9 @@ template <typename T> inline void print(T x, char c = ' ') {
 	putc(c);
 }
 
-const int maxn = 2010;
-int n, m, ans1, ans2;
-int a[maxn][maxn], p1[maxn][maxn], p2[maxn][maxn], f1[maxn][maxn], f2[maxn][maxn];
+#define int long long 
 
-void print(int a[maxn][maxn]) {
-	for (int i = 1; i <= n; i++) {
-		for (int j = 1; j <= m; j++)
-			printf("%3d", a[i][j]);
-		putc('\n');
-	}
-}
+signed main() {
 
-int main() {
-	freopen("INPUT", "r", stdin);
-	read(n), read(m);
-	for (int i = 1; i <= n; i++)
-		for (int j = 1; j <= m; j++)
-			read(a[i][j]);
-	for (int i = 1; i <= n; i++)
-		p1[i][1] = 1;
-	for (int i = 1; i <= n; i++)
-		for (int j = 2; j <= m; j++)
-			p1
 	return 0;
-}	
-
+}
