@@ -23,7 +23,7 @@ template <typename T> inline void print(T x, char c = ' ') {
 	if (x < 0) putc('-'), x = -x;
 	for (buf[0] = 0; x; x /= 10) buf[++buf[0]] = x % 10 + 48;
 	while (buf[0]) putc((char) buf[buf[0]--]);
-	putc(c);
+	putc(c);.
 }
 
 inline char readc() {

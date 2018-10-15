@@ -28,27 +28,46 @@ template <typename T> inline void print(T x, char c = ' ') {
 
 const int maxn = 2010;
 int n, m, ans1, ans2;
-int a[maxn][maxn], p1[maxn][maxn], p2[maxn][maxn], f1[maxn][maxn], f2[maxn][maxn];
+typedef int matrix[maxn][maxn];
+matrix a, pl, pr, up;
 
-void print(int a[maxn][maxn]) {
+void print(const matrix &a) {
 	for (int i = 1; i <= n; i++) {
-		for (int j = 1; j <= m; j++)
-			printf("%3d", a[i][j]);
-		putc('\n');
+		for (int j = 1; j <= m; j++)	
+			print(a[i][j]);
+		puts("");
 	}
 }
 
 int main() {
-	freopen("INPUT", "r", stdin);
+	// freopen("1.in", "r", stdin);
 	read(n), read(m);
 	for (int i = 1; i <= n; i++)
 		for (int j = 1; j <= m; j++)
 			read(a[i][j]);
 	for (int i = 1; i <= n; i++)
-		p1[i][1] = 1;
+		pl[i][1] = pr[i][m] = 1;
 	for (int i = 1; i <= n; i++)
 		for (int j = 2; j <= m; j++)
-			p1
+			pl[i][j] = a[i][j] == a[i][j - 1] ? 1 : pl[i][j - 1] + 1;
+	for (int i = 1; i <= n; i++)
+		for (int j = m - 1; j >= 1; j--)
+			pr[i][j] = a[i][j] == a[i][j + 1] ? 1 : pr[i][j + 1] + 1;
+	for (int i = 1; i <= n; i++)
+		for (int j = 1; j <= m; j++) {
+			if (a[i][j] ^ a[i - 1][j] && i ^ 1) {
+				pl[i][j] = std::min(pl[i][j], pl[i - 1][j]);
+				pr[i][j] = std::min(pr[i][j], pr[i - 1][j]);
+				up[i][j] = up[i - 1][j] + 1;
+			} else {
+				up[i][j] = 1;
+			}
+			int a = up[i][j], b = pl[i][j] + pr[i][j] - 1;
+			ans2 = std::max(ans2, a * b);
+			a = std::min(a, b);
+			ans1 = std::max(ans1, a * a);
+		}
+	// print(a), print(up), print(pl), print(pr);
+	print(ans1, '\n'), print(ans2, '\n');
 	return 0;
-}	
-
+}
