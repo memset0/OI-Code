@@ -27,16 +27,32 @@ template <typename T> inline void print(T x, char c = ' ') {
 }
 
 const int maxm = 15010, maxl = 20;
+const ll mod = 1000000007;
+
 int m, l, tn;
-ll n, now, tmp2, tmp3, tmp5, tmp7;
+ll n, ans, now, tmp2, tmp3, tmp5, tmp7;
 int v[maxl];
 ll t[maxm], b[maxm], f[maxl][maxm][2];
+
+struct pair {
+	ll v;
+	int i, j;
+} u;
+inline bool operator < (const pair &a, const pair &b) {
+	return a.v < b.v;
+}
+
+inline bool rev(const int &a, const int &b) {
+	return a > b;
+}
+
+typedef std::priority_queue < pair > heap;
+heap q;
 
 #define find(x) (std::lower_bound(b+1,b+tn+1,x)-b)
 
 void move(int fr, int to, int k, int p) {
-	printf("move %d %d %d %d\n", fr, to, k, p);
-	if (p == b[k]) {
+	if (p == v[k]) {
 		f[k][to][1] += f[k - 1][fr][1];
 		f[k][to][0] += f[k - 1][fr][0];
 	} else if (p < v[k]) {
@@ -45,18 +61,16 @@ void move(int fr, int to, int k, int p) {
 	} else {
 		f[k][to][0] += f[k - 1][fr][0];
 	}
+	// printf("move %d %d %d %d\n", fr, to, k, p);
 }
 
-void split(int n) {
-	while (n) {
-		v[++l] = n % 10;
-		n /= 10;
-	}
+void split(ll n) {
+	while (n) v[++l] = n % 10, n /= 10;
 	std::reverse(v + 1, v + l + 1);
 }
 
 int main() {
-	freopen("1.in", "r", stdin);
+	// freopen("1.in", "r", stdin);
 	read(n), read(m);
 	now = 1;
 	for (int c2 = 0; now <= n; c2++) {
@@ -76,29 +90,39 @@ int main() {
 		now = tmp2 * 2;
 	}
 	std::sort(b + 1, b + tn + 1);
+	// for (int i = 1; i <= tn; i++)
+	// 	print(b[i]);
+	// putc('\n');
 	split(n);
-	f[0][1][0] = 1;
-	for (int k = 1; k <= l; k++)
-		for (int i = 1; i <= tn; i++) {
-			move(i, i, k, 1);
-			if (b[i] % 2 == 0) move(find(b[i] / 2), i, k, 2);
-			if (b[i] % 3 == 0) move(find(b[i] / 3), i, k, 3);
-			if (b[i] % 4 == 0) move(find(b[i] / 4), i, k, 4);
-			if (b[i] % 5 == 0) move(find(b[i] / 5), i, k, 5);
-			if (b[i] % 6 == 0) move(find(b[i] / 6), i, k, 6);
-			if (b[i] % 7 == 0) move(find(b[i] / 7), i, k, 7);
-			if (b[i] % 8 == 0) move(find(b[i] / 8), i, k, 8);
-			if (b[i] % 9 == 0) move(find(b[i] / 9), i, k, 9);
-		}
+	for (int k = 1; k <= l; k++) {
+		for (int j = 1; j < 10; j++)
+			if (k > 1 || (k == 1 && j <= v[1]))
+				f[k][j][k == 1 && j == v[1] ? 1 : 0]++;
+		for (int i = 1; i <= tn; i++)
+			for (int j = 1; j < 10; j++)
+				if (b[i] % j == 0)
+					move(find(b[i] / j), i, k, j);
+	}
 	for (int i = 1; i <= tn; i++)
 		t[i] = f[l][i][0] + f[l][i][1];
+	// for (int t = 1; t <= l; t++) {
+	// 	for (int i = 0; i <= tn; i++)
+	// 		printf("%d %d %d %d\n", i, b[i], f[t][i][0], f[t][i][1]);
+	// 	putc('\n');
+	// }
+	// for (int i = 1; i <= tn; i++)
+	// 	print(t[i]);
+	// putc('\n');
+	std::sort(t + 1, t + tn + 1, rev);
 	for (int i = 1; i <= tn; i++)
-		print(t[i]);
-	putc('\n');
-	for (int i = 1; i <= tn; i++)
-		for (int j = 1; j <= tn; j++)
-			q.push(t[i] * t[j]);
-	for (int i = 1; i <= m; i++)
-		
+		q.push(pair{t[i] * t[1], i, 1});
+	for (int i = 1; i <= m; i++) {
+		u = q.top(), q.pop();
+		ans = (ans + u.v) % mod;
+		// printf("> %d %d %d\n", u.v, u.i, u.j);
+		if (u.j < n)
+			q.push(pair{t[u.i] * t[u.j + 1], u.i, u.j + 1});
+	}
+	print(ans, '\n');
 	return 0;
 }
