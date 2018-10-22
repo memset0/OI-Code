@@ -17,6 +17,7 @@ template <typename T> inline void read(T &x) {
 template <typename T> inline void readc(T &x) {
 	while (x = getc(), !islower(x) && !isupper(x));
 }
+template <typename T> inline void print(T x, char c = ' ') {
 	static int buf[40];
 	if (x == 0) { putc('0'); putc(c); return; }
 	if (x < 0) putc('-'), x = -x;
