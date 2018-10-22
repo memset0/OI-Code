@@ -48,11 +48,13 @@ bool check(int x) {
 				lst -= g[u][i];
 				u = f[u][i];
 			}
-		if (!u)
-			tp[++p] = lst;
+		if (!u) {
+			vet[jump(a[i])].push_back(lst);
+		}
 	}
-	for (int i = hed[1], v = to[i]; i; i = nxt[i], v = to[i])
-		if ()
+	for (int i = hed[1], v = to[i]; i; i = nxt[i], v = to[i]) {
+		vrt
+	}
 }
 
 int main() {
