@@ -1,0 +1,165 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:700);
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 300px;
+}
+
+section {
+  margin-top: 10px;
+}
+
+.board {
+  margin: auto;
+  margin-top: 10px;
+  width: 400px;
+  height: 400px;
+}
+
+.boardRow {
+  width: 100%;
+  height: 6.66667%;
+  border-bottom: 1px solid #2c3e50;
+  box-sizing: border-box;
+}
+
+.boardCol {
+  width: 6.66667%;
+  height: 100%;
+  background-color: #34495e;
+  float: left;
+  border-radius: 3px;
+  border-left: 1px solid #2c3e50;
+  box-sizing: border-box;
+}
+
+.boardCellCross {
+  margin: auto;
+  margin-top: 0.65%;
+  width: 3px;
+  height: 98.7%;
+  background-color: #2ecc71;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  border-radius: 1.5px;
+}
+.boardCellCross:before {
+  background-color: inherit;
+  border-radius: inherit;
+  height: inherit;
+  width: inherit;
+  position: absolute;
+  content: "";
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.boardCellCircle {
+  margin: 15%;
+  width: 70%;
+  height: 70%;
+  border: 3px solid #e74c3c;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.controls {
+  width: 400px;
+  height: 26.66667px;
+  margin: auto;
+}
+
+.newGameCtrl, .sizeCtrl, .messages {
+  position: relative;
+  display: inline-block;
+  height: 100%;
+  width: 6.66667%;
+}
+
+.sizeCtrl, .messages {
+  float: right;
+}
+
+.messages {
+  width: 73.33333%;
+  z-index: 0;
+}
+
+#check {
+  display: none;
+}
+
+.newContainer {
+  z-index: 10;
+}
+
+.newMain, .sizeScale, .messagesContainer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 50;
+  display: table;
+  text-align: center;
+}
+
+.newMain, .sizeScale {
+  cursor: pointer;
+  background-color: #2ecc71;
+  border-radius: 50%;
+}
+.newMain:hover, .sizeScale:hover {
+  background-color: #e74c3c;
+}
+
+.newMainText {
+  font-family: "Roboto", sans-serif;
+  font-size: 13px;
+  color: #2c3e50;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.messagesContainer .newMainText {
+  color: #2ecc71;
+}
+
+.messagesContainer .looseState {
+  color: #e74c3c;
+}
+
+.newPlate {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  -webkit-transition: all 0.2s ease-in;
+  transition: all 0.2s ease-in;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 5;
+}
+.newPlate:hover {
+  background-color: #34495e;
+}
+
+.newPlate:nth-of-type(1) {
+  -webkit-transition-delay: 0s;
+  transition-delay: 0s;
+}
+
+.newPlate:nth-of-type(2) {
+  -webkit-transition-delay: 0.3s;
+  transition-delay: 0.3s;
+}
+
+#check:checked ~ .newMain + .newContainer .newPlate {
+  opacity: 1;
+}
+#check:checked ~ .newMain + .newContainer .newPlate:nth-of-type(1) {
+  left: 100%;
+}
+#check:checked ~ .newMain + .newContainer .newPlate:nth-of-type(2) {
+  left: 200%;
+}
