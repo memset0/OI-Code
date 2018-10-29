@@ -65,8 +65,8 @@ int Lucas(int n, int m){
 #undef int
 int main() {
 #define int long long
-	freopen("math.in", "r", stdin);
-	freopen("math.out", "w", stdout);
+	// freopen("math.in", "r", stdin);
+	// freopen("math.out", "w", stdout);
 //	freopen("3.txt", "r", stdin);
 //	freopen("1.txt", "w", stdout);
 

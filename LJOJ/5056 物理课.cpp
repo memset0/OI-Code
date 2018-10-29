@@ -32,8 +32,8 @@ int T;
 double v, g, d, o, ans; 
 
 int main() {
-	freopen("physics.in", "r", stdin);
-	freopen("physics.out", "w", stdout);
+	// freopen("physics.in", "r", stdin);
+	// freopen("physics.out", "w", stdout);
 
 	read(T);
 	while (T--) {
