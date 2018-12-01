@@ -74,7 +74,7 @@ void main() {
 	for (int i = 0; i <= n1; i++) read(a[i]);
 	for (int i = 0; i <= n2; i++) read(b[i]);
 	n = 1; while (n <= (n1 + n2)) n <<= 1, ++k;
-	for (int i = 0; i < n; i++) rev[i] = (rev[i >> 1] >> 1) | ((i & 1) << (k - 1));
+	for (int i = 0; i < n; i++ ) rev[i] = (rev[i >> 1] >> 1) | ((i & 1) << (k - 1));
 	for (int k = 0; k < 3; k++) {
 		// puts("===============");
 		for (int i = 0; i < n; i++) f[k][i] = a[i] % P[k];
