@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#define int long long
 namespace ringo {
 typedef long long ll;
 
@@ -36,10 +37,7 @@ struct pair {
 		return (pair){(a - other.a + p1) % p1, (b - other.b + p2) % p2};
 	}
 	inline pair operator * (const pair &other) {
-		return (pair){
-			(int)((ll)a * other.a % p1),
-			(int)((ll)b * other.b % p2)
-		};
+		return (pair){(ll)a * other.a % p1, (ll)b * other.b % p2};
 	}
 	inline bool operator == (const pair &other) {
 		return a == other.a && b == other.b;
@@ -79,8 +77,8 @@ void main() {
 	}
 	// for (int i = 1; i <= m; i++)
 	// 	printf("(%d %d)%c", s[i].a, s[i].b, " \n"[i == m]);
-	for (int i = 1, j; i <= m; i++) {
-		ll tmp = m - (ll)i * cnt[0];
+	for (int i = 1, j, tmp; i <= m; i++) {
+		tmp = m - (ll)i * cnt[0];
 		if (tmp <= 0 || tmp % cnt[1]) continue;
 		j = tmp / cnt[1];
 		if (check(i, j)) ans++;

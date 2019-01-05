@@ -83,4 +83,3 @@ int main() {
 	bfs(id[r][c]);
 	print(ans, '\n');
 }
-

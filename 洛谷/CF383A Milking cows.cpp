@@ -15,8 +15,6 @@ ll u, ans, a[maxn], f[maxn], s1[maxn], s2[maxn];
 #define sum(l,r,s) (s[r] - s[l - 1])
 
 int main() {
-//	freopen("backlight.in", "r", stdin);
-//	freopen("backlight.out", "w", stdout);
 	n = read();
 	for (int i = 1; i <= n; i++)
 		a[i] = read(), s1[i] = s1[i - 1] + a[i], s2[i] = s2[i - 1] + (a[i] ^ 1);
@@ -24,8 +22,7 @@ int main() {
 	for (int i = 1; i <= n; i++)
 		if (a[i])
 			u += sum(i + 1, n, s2);
-	ans = u;
-//	cout << u << endl; 
+	ans = u + 1 - 1;
 	u = 0;
 	for (int i = n; i >= 1; i--)
 		if (a[i])

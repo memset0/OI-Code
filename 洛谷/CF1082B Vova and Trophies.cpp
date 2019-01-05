@@ -67,4 +67,4 @@ void main() {
 	print(ans, '\n');
 }
 
-} signed main() { return ringo::main(), 0; }
+} signed main() { return ringo::main(), 0; } //dfasfsdff

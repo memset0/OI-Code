@@ -1,3 +1,4 @@
+// luogu-judger-enable-o2
 // ==============================
 //  author: memset0
 //  website: https://memset0.cn

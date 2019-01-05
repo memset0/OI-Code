@@ -55,7 +55,7 @@ void main() {
         // printf("%d %d : ", flag, top);
         // for (int i = 1; i <= top; i++)
         //     putchar(stk[i]);
-        // putchar('\n');
+        // putchar('\n');  
         if (!flag) continue;
         if (!top) ++cnt[0], ++cnt2[0];
         else if (stk[1] == '(') ++cnt[top];

@@ -19,4 +19,3 @@ int main() {
 	printf("%d/%d\n", c / __gcd(c, 6), 6 / __gcd(c, 6));
 	return 0;
 }
-

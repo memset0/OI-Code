@@ -48,3 +48,5 @@ void main() {
 }
 
 } signed main() { return ringo::main(), 0; }
+
+//976562438476562.5

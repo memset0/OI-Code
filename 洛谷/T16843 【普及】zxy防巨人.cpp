@@ -4,14 +4,10 @@ using namespace std;
 const int maxn = 10010;
 int n, m, a[maxn];
 char chr; int ret;
-//int read() {
-//	chr = getchar(), ret = 0;
-//	while (!isNum(chr)) chr = getchar();
-//	while (isNum(chr)) ret = ret * 10 + chr - '0', chr = getchar();
-//	return ret;
-//}
 int read() {
-	scanf("%d", &ret);
+	chr = getchar(), ret = 0;
+	while (!isNum(chr)) chr = getchar();
+	while (isNum(chr)) ret = ret * 10 + chr - '0', chr = getchar();
 	return ret;
 }
 int x, y, z;

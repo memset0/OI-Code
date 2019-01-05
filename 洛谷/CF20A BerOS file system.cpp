@@ -29,4 +29,3 @@ int main() {
 			putchar(s[i]);
 	return 0;
 }
-

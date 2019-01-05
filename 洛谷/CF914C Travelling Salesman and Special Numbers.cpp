@@ -36,7 +36,6 @@ char s[N];
 void main() {
     scanf("%s", s + 1), n = strlen(s + 1), read(m);
     if (m == 0) { puts("1"); return; }
-    if (n == 1 && s[1] == '1' && m == 1) { puts("0"); return; }
     for (int i = 1; i <= n; i++) a[i] = s[i] - '0';
     for (int i = 2; i <= n; i++)
         stp[i] = stp[__builtin_popcount(i)] + 1;
@@ -60,6 +59,7 @@ void main() {
         if (stp[i] == m - 1)
             (ans += v) %= mod;
     }
+    if (m == 1) ans = (ans - 1 + mod) % mod;
     print(ans % mod, '\n');
 }
 

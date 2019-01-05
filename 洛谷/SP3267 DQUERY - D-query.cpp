@@ -60,4 +60,3 @@ void main() {
 }
 
 } int main() { return ringo::main(), 0; }
-
